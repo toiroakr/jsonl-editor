@@ -1,0 +1,73 @@
+{
+  "name": "jsonl-editor",
+  "displayName": "JSONL Editor",
+  "description": "Edit individual JSON lines in JSONL files",
+  "publisher": "toiroakr",
+  "version": "0.1.0",
+  "icon": "assets/icon.png",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "JSON",
+    "JSONL",
+    "JSON Lines"
+  ],
+  "engines": {
+    "vscode": "^1.99.0"
+  },
+  "license": "MIT",
+  "activationEvents": [
+    "onLanguage:jsonl"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "jsonl-editor.editJsonlLine",
+        "title": "Edit JSONL line"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "jsonl-editor.editJsonlLine",
+          "when": "resourceExtname == .jsonl",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.99.0",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.25.6",
+    "eslint": "^9.23.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.8.2",
+    "undici-types": "^7.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toiroakr/jsonl-editor"
+  }
+}
