@@ -12,8 +12,6 @@
 - **Edit JSONL Lines**: Edit individual JSON lines in JSONL (JSON Lines) files. Open any line as formatted JSON in a new tab, edit it, and save to update the original JSONL file.
 - **Preview JSONL**: Real-time preview of the JSON on the current line. The preview automatically updates as you move your cursor through the JSONL file.
 
-![how_to_use](./assets/how_to_use.gif)
-
 ## How to Use
 
 ### Edit JSONL Line
