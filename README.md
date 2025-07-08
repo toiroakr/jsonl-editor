@@ -9,22 +9,24 @@
 
 
 ## Features
-Edit individual JSON lines in JSONL (JSON Lines) files. Open any line as formatted JSON in a new tab, edit it, and save to update the original JSONL file.
+- **Edit JSONL Lines**: Edit individual JSON lines in JSONL (JSON Lines) files. Open any line as formatted JSON in a new tab, edit it, and save to update the original JSONL file.
+- **Preview JSONL**: Real-time preview of the JSON on the current line. The preview automatically updates as you move your cursor through the JSONL file.
 
 ![how_to_use](./assets/how_to_use.gif)
 
 ## How to Use
-### 1. Open a JSONL file and place your cursor on any JSON line.
-Each line in a JSONL file should be a valid JSON object.
 
-### 2. Open command palette and select `Edit JSONL line`.
-Or right-click and select the command from the context menu.
+### Edit JSONL Line
+1. Open a JSONL file and place your cursor on any JSON line.
+2. Open command palette and select `Edit JSONL line` or right-click and select from context menu.
+3. Edit the JSON in the new tab (formatted for easy editing).
+4. Save (Ctrl+S / Cmd+S) to update the original JSONL file.
 
-### 3. Edit the JSON in the new tab.
-The JSON will be formatted for easy editing.
-
-### 4. Save (Ctrl+S / Cmd+S) to update the original JSONL file.
-The JSON will be minified and written back to the same line in the JSONL file.
+### Preview JSONL
+1. Open a JSONL file.
+2. Open command palette and select `Preview JSONL` or right-click and select from context menu.
+3. The preview panel will show the formatted JSON of the current line.
+4. Move your cursor to different lines to see their JSON content in real-time.
 
 
 ## Others

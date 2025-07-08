@@ -26,12 +26,21 @@
       {
         "command": "jsonl-editor.editJsonlLine",
         "title": "Edit JSONL line"
+      },
+      {
+        "command": "jsonl-editor.previewJsonl",
+        "title": "Preview JSONL"
       }
     ],
     "menus": {
       "editor/context": [
         {
           "command": "jsonl-editor.editJsonlLine",
+          "when": "resourceExtname == .jsonl",
+          "group": "navigation"
+        },
+        {
+          "command": "jsonl-editor.previewJsonl",
           "when": "resourceExtname == .jsonl",
           "group": "navigation"
         }

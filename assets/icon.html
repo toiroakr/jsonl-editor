@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSONL Editor Icon</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        canvas {
+            border: 1px solid #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #005a9e;
+        }
+
+        .info {
+            color: #ccc;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="iconCanvas" width="400" height="400"></canvas>
+    <button onclick="downloadIcon()">Download PNG Icon</button>
+    <div class="info">400x400 PNG icon for JSONL Editor VS Code Extension</div>
+
+    <script>
+        const canvas = document.getElementById('iconCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Function to draw the icon
+        function drawIcon() {
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 400, 400);
+            gradient.addColorStop(0, '#1a1a2e');
+            gradient.addColorStop(1, '#0f3460');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 400, 400);
+
+            // Draw multiple JSON-like lines to represent JSONL format
+            const lines = [
+                { y: 100, color: '#e94560', delay: 0 },
+                { y: 170, color: '#16c79a', delay: 100 },
+                { y: 240, color: '#f39c12', delay: 200 },
+                // { y: 310, color: '#8e44ad', delay: 300 }
+            ];
+
+            lines.forEach((line, index) => {
+                // Draw curly braces
+                ctx.font = 'bold 48px Consolas, Monaco, monospace';
+                ctx.fillStyle = line.color;
+                ctx.fillText('{', 60, line.y);
+                ctx.fillText('}', 320, line.y);
+
+                // Draw JSON-like content
+                ctx.font = '24px Consolas, Monaco, monospace';
+                ctx.fillStyle = '#ffffff';
+
+                // // Key
+                // ctx.fillStyle = '#569cd6';
+                // ctx.fillText('"key":', 85, line.y - 5);
+
+                // // Value
+                // ctx.fillStyle = '#ce9178';
+                // ctx.fillText('"value"', 180, line.y - 5);
+
+                // Add some dots to indicate more content
+                ctx.fillStyle = '#808080';
+                ctx.fillText('・・・', 170, line.y - 10);
+            });
+
+            // Add "JSONL" text at the bottom
+            ctx.font = 'bold 56px Arial, sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            ctx.fillText('JSONL', 200, 350);
+
+            // Reset shadow
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.textAlign = 'left';
+
+            // Add subtle glow effect around the icon
+            ctx.strokeStyle = 'rgba(0, 122, 204, 0.3)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(10, 10, 380, 380);
+        }
+
+        // Function to download the icon
+        function downloadIcon() {
+            const link = document.createElement('a');
+            link.download = 'jsonl-editor-icon.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Draw the icon when page loads
+        drawIcon();
+    </script>
+</body>
+</html>
