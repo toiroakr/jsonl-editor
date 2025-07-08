@@ -140,15 +140,15 @@ function getJsonlLineTarget(editor: vscode.TextEditor): EditTarget | null {
   const document = editor.document;
   const selection = editor.selection;
   const lineNumber = selection.start.line;
-  
+
   // Get the current line
   const line = document.lineAt(lineNumber);
   const lineText = line.text.trim();
-  
+
   if (!lineText) {
     return null;
   }
-  
+
   // Try to parse the line as JSON
   try {
     JSON.parse(lineText);
@@ -268,7 +268,7 @@ class JsonlPreviewPanel {
   private _getHtmlForWebview(_webview: vscode.Webview) {
     let jsonContent = '';
     let lineNumber = -1;
-    
+
     if (this._currentEditor) {
       const target = getJsonlLineTarget(this._currentEditor);
       if (target) {
@@ -286,7 +286,7 @@ class JsonlPreviewPanel {
       jsonContent = 'No JSONL file is active';
     }
 
-    return `<!DOCTYPE html>
+    return /* html */`<!DOCTYPE html>
       <html lang="en">
       <head>
         <meta charset="UTF-8">
@@ -347,7 +347,7 @@ class JsonlPreviewPanel {
       </head>
       <body>
         ${lineNumber > 0 ? `<div class="line-info">Line ${lineNumber}</div>` : ''}
-        ${jsonContent.startsWith('Invalid') || jsonContent.startsWith('No') 
+        ${jsonContent.startsWith('Invalid') || jsonContent.startsWith('No')
           ? `<div class="error">${this._escapeHtml(jsonContent)}</div>`
           : `<pre><code class="language-json">${this._escapeHtml(jsonContent)}</code></pre>`
         }
@@ -390,7 +390,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     try {
       let jsonContent: string;
-      
+
       try {
         // Parse and format the JSON line
         const parsed = JSON.parse(target.body);
