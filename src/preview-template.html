@@ -93,10 +93,10 @@
 </head>
 <body>
   <div class="navigation">
-    <button onclick="navigate('prev')" {{PREV_DISABLED}}>← Previous</button>
+    <button onclick="navigate('prev')" {{PREV_DISABLED}}>&lt;&nbsp;&nbsp;Prev</button>
     <input type="number" id="lineInput" value="{{LINE_NUMBER}}" min="1" max="{{TOTAL_LINES}}" onchange="goToLine(this.value)">
     <span class="line-counter">/ {{TOTAL_LINES}}</span>
-    <button onclick="navigate('next')" {{NEXT_DISABLED}}>Next →</button>
+    <button onclick="navigate('next')" {{NEXT_DISABLED}}>Next&nbsp;&nbsp;&gt;</button>
   </div>
   {{CONTENT}}
   <script>

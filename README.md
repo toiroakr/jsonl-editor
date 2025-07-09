@@ -26,6 +26,19 @@
 3. The preview panel will show the formatted JSON of the current line.
 4. Move your cursor to different lines to see their JSON content in real-time.
 
+## Development
+
+### Preview Template Development
+To develop and test the preview template with live reload:
+
+```bash
+npm run preview-dev
+```
+
+This will:
+- Start a development server at http://localhost:3000
+- Display the preview template with sample JSON data
+- Auto-reload when you modify `src/preview-template.html`
 
 ## Others
 [Issues](https://github.com/toiroakr/jsonl-editor/issues)
