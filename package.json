@@ -1,6 +1,6 @@
 {
   "name": "jsonl-editor",
-  "displayName": "JSONL Editor",
+  "displayName": "JSONL Edit/Preview",
   "description": "Edit individual JSON lines in JSONL files",
   "publisher": "toiroakr",
   "version": "0.2.0",
