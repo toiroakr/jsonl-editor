@@ -1,4 +1,6 @@
 const esbuild = require("esbuild");
+const fs = require("fs");
+const path = require("path");
 
 const production = process.argv.includes('--production');
 const watch = process.argv.includes('--watch');
@@ -23,6 +25,27 @@ const esbuildProblemMatcherPlugin = {
 	},
 };
 
+/**
+ * @type {import('esbuild').Plugin}
+ */
+const copyHtmlPlugin = {
+	name: 'copy-html',
+	setup(build) {
+		build.onEnd(() => {
+			const srcPath = path.join(__dirname, 'src', 'preview-template.html');
+			const destPath = path.join(__dirname, 'dist', 'preview-template.html');
+			
+			// Ensure dist directory exists
+			if (!fs.existsSync(path.dirname(destPath))) {
+				fs.mkdirSync(path.dirname(destPath), { recursive: true });
+			}
+			
+			// Copy HTML file
+			fs.copyFileSync(srcPath, destPath);
+		});
+	},
+};
+
 async function main() {
 	const ctx = await esbuild.context({
 		entryPoints: [
@@ -38,6 +61,7 @@ async function main() {
 		external: ['vscode'],
 		logLevel: 'silent',
 		plugins: [
+			copyHtmlPlugin,
 			/* add to the end of plugins array */
 			esbuildProblemMatcherPlugin,
 		],

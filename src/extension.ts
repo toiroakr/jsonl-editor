@@ -168,15 +168,24 @@ class JsonlPreviewPanel {
   private readonly _panel: vscode.WebviewPanel;
   private _disposables: vscode.Disposable[] = [];
   private _currentEditor: vscode.TextEditor | undefined;
+  private _currentLine: number = 0;
+  private _isManualNavigation: boolean = false;
+  private _htmlTemplate: string | undefined;
 
-  public static createOrShow(extensionUri: vscode.Uri) {
-    const column = vscode.window.activeTextEditor
-      ? vscode.window.activeTextEditor.viewColumn
+  public static createOrShow(extensionUri: vscode.Uri, editor?: vscode.TextEditor) {
+    const column = editor
+      ? editor.viewColumn
       : undefined;
 
     // If we already have a panel, show it.
     if (JsonlPreviewPanel.currentPanel) {
       JsonlPreviewPanel.currentPanel._panel.reveal(column);
+      // Update editor if provided
+      if (editor) {
+        JsonlPreviewPanel.currentPanel._currentEditor = editor;
+        JsonlPreviewPanel.currentPanel._currentLine = editor.selection.start.line;
+        JsonlPreviewPanel.currentPanel._update();
+      }
       return JsonlPreviewPanel.currentPanel;
     }
 
@@ -191,12 +200,29 @@ class JsonlPreviewPanel {
       }
     );
 
-    JsonlPreviewPanel.currentPanel = new JsonlPreviewPanel(panel, extensionUri);
+    JsonlPreviewPanel.currentPanel = new JsonlPreviewPanel(panel, extensionUri, editor);
     return JsonlPreviewPanel.currentPanel;
   }
 
-  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
+  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, editor?: vscode.TextEditor) {
     this._panel = panel;
+
+    // Load HTML template
+    const templatePath = path.join(__dirname, 'preview-template.html');
+    try {
+      this._htmlTemplate = fs.readFileSync(templatePath, 'utf8');
+    } catch (e) {
+      console.error('Failed to load preview template:', e);
+    }
+
+    // Initialize with provided editor or current editor
+    if (editor) {
+      this._currentEditor = editor;
+      this._currentLine = editor.selection.start.line;
+    } else if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.uri.path.endsWith('.jsonl')) {
+      this._currentEditor = vscode.window.activeTextEditor;
+      this._currentLine = this._currentEditor.selection.start.line;
+    }
 
     // Set the webview's initial html content
     this._update();
@@ -218,8 +244,9 @@ class JsonlPreviewPanel {
     // Handle cursor position changes
     vscode.window.onDidChangeTextEditorSelection(
       e => {
-        if (e.textEditor.document.uri.path.endsWith('.jsonl')) {
+        if (e.textEditor.document.uri.path.endsWith('.jsonl') && !this._isManualNavigation) {
           this._currentEditor = e.textEditor;
+          this._currentLine = e.textEditor.selection.start.line;
           this._update();
         }
       },
@@ -239,10 +266,21 @@ class JsonlPreviewPanel {
       this._disposables
     );
 
-    // Initialize with current editor
-    if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.uri.path.endsWith('.jsonl')) {
-      this._currentEditor = vscode.window.activeTextEditor;
-    }
+    // Handle messages from the webview
+    this._panel.webview.onDidReceiveMessage(
+      message => {
+        switch (message.command) {
+          case 'goToLine':
+            this._goToLine(message.line);
+            return;
+          case 'navigate':
+            this._navigate(message.direction);
+            return;
+        }
+      },
+      null,
+      this._disposables
+    );
   }
 
   public dispose() {
@@ -259,6 +297,48 @@ class JsonlPreviewPanel {
     }
   }
 
+  private _goToLine(lineNumber: number) {
+    if (!this._currentEditor) {
+      return;
+    }
+
+    const document = this._currentEditor.document;
+    if (lineNumber < 1 || lineNumber > document.lineCount) {
+      vscode.window.showErrorMessage(`Line ${lineNumber} is out of range (1-${document.lineCount})`);
+      return;
+    }
+
+    this._isManualNavigation = true;
+    this._currentLine = lineNumber - 1; // Convert to 0-based
+    this._update();
+
+    // Reset manual navigation flag after a short delay
+    setTimeout(() => {
+      this._isManualNavigation = false;
+    }, 500);
+  }
+
+  private _navigate(direction: 'prev' | 'next') {
+    if (!this._currentEditor) {
+      return;
+    }
+
+    const document = this._currentEditor.document;
+    if (direction === 'prev' && this._currentLine > 0) {
+      this._currentLine--;
+    } else if (direction === 'next' && this._currentLine < document.lineCount - 1) {
+      this._currentLine++;
+    }
+
+    this._isManualNavigation = true;
+    this._update();
+
+    // Reset manual navigation flag after a short delay
+    setTimeout(() => {
+      this._isManualNavigation = false;
+    }, 500);
+  }
+
   private _update() {
     const webview = this._panel.webview;
     this._panel.title = 'JSONL Preview';
@@ -267,96 +347,63 @@ class JsonlPreviewPanel {
 
   private _getHtmlForWebview(_webview: vscode.Webview) {
     let jsonContent = '';
-    let lineNumber = -1;
+    let lineNumber = 0;
+    let totalLines = 0;
 
     if (this._currentEditor) {
-      const target = getJsonlLineTarget(this._currentEditor);
-      if (target) {
+      const document = this._currentEditor.document;
+      totalLines = document.lineCount;
+
+      // Ensure current line is within bounds
+      if (this._currentLine >= totalLines) {
+        this._currentLine = totalLines - 1;
+      }
+      if (this._currentLine < 0) {
+        this._currentLine = 0;
+      }
+
+      lineNumber = this._currentLine + 1; // Convert to 1-based line number
+
+      // Get the line content
+      const line = document.lineAt(this._currentLine);
+      const lineText = line.text.trim();
+
+      if (lineText) {
         try {
-          const parsed = JSON.parse(target.body);
+          const parsed = JSON.parse(lineText);
           jsonContent = JSON.stringify(parsed, null, 2);
-          lineNumber = target.lineNumber + 1; // Convert to 1-based line number
         } catch (e) {
-          jsonContent = 'Invalid JSON on current line';
+          jsonContent = 'Invalid JSON on line ' + lineNumber;
         }
       } else {
-        jsonContent = 'No valid JSON on current line';
+        jsonContent = 'Empty line';
       }
     } else {
       jsonContent = 'No JSONL file is active';
     }
 
-    return /* html */`<!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>JSONL Preview</title>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-        <style>
-          body {
-            font-family: var(--vscode-font-family);
-            font-size: var(--vscode-font-size);
-            color: var(--vscode-foreground);
-            background-color: var(--vscode-editor-background);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-          }
-          .line-info {
-            color: var(--vscode-descriptionForeground);
-            margin-bottom: 10px;
-            font-size: 0.9em;
-          }
-          pre[class*="language-"] {
-            background-color: var(--vscode-textBlockQuote-background);
-            border: 1px solid var(--vscode-panel-border);
-            border-radius: 4px;
-            padding: 15px;
-            overflow: auto;
-            margin: 0;
-          }
-          code[class*="language-"] {
-            font-family: var(--vscode-editor-font-family);
-            font-size: var(--vscode-editor-font-size);
-            text-shadow: none;
-          }
-          .error {
-            color: var(--vscode-errorForeground);
-            font-family: var(--vscode-editor-font-family);
-            font-size: var(--vscode-editor-font-size);
-          }
-          /* Override Prism theme colors to match VS Code */
-          .token.property,
-          .token.string {
-            color: var(--vscode-debugTokenExpression-string);
-          }
-          .token.number,
-          .token.boolean {
-            color: var(--vscode-debugTokenExpression-number);
-          }
-          .token.null {
-            color: var(--vscode-debugTokenExpression-boolean);
-          }
-          .token.punctuation {
-            color: var(--vscode-foreground);
-          }
-        </style>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
-      </head>
-      <body>
-        ${lineNumber > 0 ? `<div class="line-info">Line ${lineNumber}</div>` : ''}
-        ${jsonContent.startsWith('Invalid') || jsonContent.startsWith('No')
-          ? `<div class="error">${this._escapeHtml(jsonContent)}</div>`
-          : `<pre><code class="language-json">${this._escapeHtml(jsonContent)}</code></pre>`
-        }
-        <script>
-          // Highlight the code
-          Prism.highlightAll();
-        </script>
-      </body>
-      </html>`;
+    // If template is not loaded, return fallback HTML
+    if (!this._htmlTemplate) {
+      return '<html><body><h1>Error: Template not loaded</h1></body></html>';
+    }
+
+    // Prepare content based on JSON validity
+    let content = '';
+    if (jsonContent.startsWith('Invalid') || jsonContent.startsWith('No') || jsonContent === 'Empty line') {
+      content = `<div class="error">${this._escapeHtml(jsonContent)}</div>`;
+    } else {
+      content = `<pre><code class="language-json">${this._escapeHtml(jsonContent)}</code></pre>`;
+    }
+
+    // Replace placeholders in template
+    let html = this._htmlTemplate;
+    html = html.replace(/{{LINE_NUMBER}}/g, lineNumber.toString());
+    html = html.replace(/{{TOTAL_LINES}}/g, totalLines.toString());
+    html = html.replace('{{PREV_DISABLED}}', lineNumber <= 1 ? 'disabled' : '');
+    html = html.replace('{{NEXT_DISABLED}}', lineNumber >= totalLines ? 'disabled' : '');
+    html = html.replace('{{CONTENT}}', content);
+
+    return html;
   }
 
   private _escapeHtml(text: string): string {
@@ -430,7 +477,7 @@ export function activate(context: vscode.ExtensionContext) {
       return;
     }
 
-    JsonlPreviewPanel.createOrShow(context.extensionUri);
+    JsonlPreviewPanel.createOrShow(context.extensionUri, editor);
   });
 
   context.subscriptions.push(editJsonlLineCommand);

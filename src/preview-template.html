@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSONL Preview</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: var(--vscode-font-family);
+      font-size: var(--vscode-font-size);
+      color: var(--vscode-foreground);
+      background-color: var(--vscode-editor-background);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .line-info {
+      color: var(--vscode-descriptionForeground);
+      margin-bottom: 10px;
+      font-size: 0.9em;
+    }
+    pre[class*="language-"] {
+      background-color: var(--vscode-textBlockQuote-background);
+      border: 1px solid var(--vscode-panel-border);
+      border-radius: 4px;
+      padding: 15px;
+      overflow: auto;
+      margin: 0;
+    }
+    code[class*="language-"] {
+      font-family: var(--vscode-editor-font-family);
+      font-size: var(--vscode-editor-font-size);
+      text-shadow: none;
+    }
+    .error {
+      color: var(--vscode-errorForeground);
+      font-family: var(--vscode-editor-font-family);
+      font-size: var(--vscode-editor-font-size);
+    }
+    /* Override Prism theme colors to match VS Code */
+    .token.property,
+    .token.string {
+      color: var(--vscode-debugTokenExpression-string);
+    }
+    .token.number,
+    .token.boolean {
+      color: var(--vscode-debugTokenExpression-number);
+    }
+    .token.null {
+      color: var(--vscode-debugTokenExpression-boolean);
+    }
+    .token.punctuation {
+      color: var(--vscode-foreground);
+    }
+    .navigation {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .navigation button {
+      background-color: var(--vscode-button-background);
+      color: var(--vscode-button-foreground);
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: var(--vscode-font-size);
+    }
+    .navigation button:hover {
+      background-color: var(--vscode-button-hoverBackground);
+    }
+    .navigation button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .navigation input {
+      background-color: var(--vscode-input-background);
+      color: var(--vscode-input-foreground);
+      border: 1px solid var(--vscode-input-border);
+      padding: 5px;
+      border-radius: 3px;
+      width: 80px;
+      font-size: var(--vscode-font-size);
+    }
+    .line-counter {
+      color: var(--vscode-descriptionForeground);
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</head>
+<body>
+  <div class="navigation">
+    <button onclick="navigate('prev')" {{PREV_DISABLED}}>← Previous</button>
+    <input type="number" id="lineInput" value="{{LINE_NUMBER}}" min="1" max="{{TOTAL_LINES}}" onchange="goToLine(this.value)">
+    <span class="line-counter">/ {{TOTAL_LINES}}</span>
+    <button onclick="navigate('next')" {{NEXT_DISABLED}}>Next →</button>
+  </div>
+  {{CONTENT}}
+  <script>
+    // Highlight the code
+    Prism.highlightAll();
+
+    // Get VS Code API
+    const vscode = acquireVsCodeApi();
+
+    // Navigation functions
+    function navigate(direction) {
+      vscode.postMessage({
+        command: 'navigate',
+        direction: direction
+      });
+    }
+
+    function goToLine(line) {
+      const lineNum = parseInt(line);
+      if (!isNaN(lineNum)) {
+        vscode.postMessage({
+          command: 'goToLine',
+          line: lineNum
+        });
+      }
+    }
+
+    // Handle Enter key in input
+    document.getElementById('lineInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        goToLine(this.value);
+      }
+    });
+  </script>
+</body>
+</html>
