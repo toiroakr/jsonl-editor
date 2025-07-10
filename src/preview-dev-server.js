@@ -4,70 +4,64 @@ const path = require('path');
 
 const PORT = 3000;
 const TEMPLATE_PATH = path.join(__dirname, 'preview-template.html');
+const SAMPLE_DATA_PATH = path.join(__dirname, 'sample-data.js');
+const VSCODE_THEME_PATH = path.join(__dirname, 'vscode-theme.js');
 
-// Sample data for testing
-const SAMPLE_DATA = {
-  LINE_NUMBER: '3',
-  TOTAL_LINES: '10',
-  PREV_DISABLED: '',
-  NEXT_DISABLED: '',
-  CONTENT: /* jsx */ `<pre><code class="language-json">{
-  "name": "John Doe",
-  "age": 30,
-  "email": "john@example.com",
-  "address": {
-    "street": "123 Main St",
-    "city": "New York",
-    "country": "USA"
-  },
-  "hobbies": ["reading", "coding", "gaming"],
-  "active": true
-}</code></pre>`
-};
+// Helper function to load modules without cache
+function requireUncached(module) {
+  delete require.cache[require.resolve(module)];
+  return require(module);
+}
 
-// Mock VS Code API
-const MOCK_VSCODE_API = /* js */ `
-  window.acquireVsCodeApi = function() {
-    return {
-      postMessage: function(message) {
-        console.log('VS Code API message:', message);
-        // Mock navigation
-        if (message.command === 'navigate') {
-          const currentLine = parseInt(document.getElementById('lineInput').value);
-          let newLine = currentLine;
-          if (message.direction === 'prev' && currentLine > 1) {
-            newLine = currentLine - 1;
-          } else if (message.direction === 'next' && currentLine < ${SAMPLE_DATA.TOTAL_LINES}) {
-            newLine = currentLine + 1;
+// Mock VS Code API factory
+function createMockVSCodeAPI(totalLines) {
+  return /* js */ `
+    window.acquireVsCodeApi = function() {
+      return {
+        postMessage: function(message) {
+          console.log('VS Code API message:', message);
+          // Mock navigation
+          if (message.command === 'navigate') {
+            const currentLine = parseInt(document.getElementById('lineInput').value);
+            let newLine = currentLine;
+            if (message.direction === 'prev' && currentLine > 1) {
+              newLine = currentLine - 1;
+            } else if (message.direction === 'next' && currentLine < ${totalLines}) {
+              newLine = currentLine + 1;
+            }
+            document.getElementById('lineInput').value = newLine;
+            updateNavigationButtons(newLine);
+          } else if (message.command === 'goToLine') {
+            updateNavigationButtons(message.line);
           }
-          document.getElementById('lineInput').value = newLine;
-          updateNavigationButtons(newLine);
-        } else if (message.command === 'goToLine') {
-          updateNavigationButtons(message.line);
         }
-      }
+      };
     };
-  };
 
-  function updateNavigationButtons(line) {
-    const prevButton = document.querySelector('button[onclick="navigate(\\'prev\\')"]');
-    const nextButton = document.querySelector('button[onclick="navigate(\\'next\\')"]');
+    function updateNavigationButtons(line) {
+      const prevButton = document.querySelector('button[onclick="navigate(\\'prev\\')"]');
+      const nextButton = document.querySelector('button[onclick="navigate(\\'next\\')"]');
 
-    if (line <= 1) {
-      prevButton.setAttribute('disabled', 'disabled');
-    } else {
-      prevButton.removeAttribute('disabled');
+      if (line <= 1) {
+        prevButton.setAttribute('disabled', 'disabled');
+      } else {
+        prevButton.removeAttribute('disabled');
+      }
+
+      if (line >= ${totalLines}) {
+        nextButton.setAttribute('disabled', 'disabled');
+      } else {
+        nextButton.removeAttribute('disabled');
+      }
     }
-
-    if (line >= ${SAMPLE_DATA.TOTAL_LINES}) {
-      nextButton.setAttribute('disabled', 'disabled');
-    } else {
-      nextButton.removeAttribute('disabled');
-    }
-  }
-`;
+  `;
+}
 
 function processTemplate(template) {
+  // Load fresh data on each request
+  const SAMPLE_DATA = requireUncached('./sample-data');
+  const vscodeThemeVars = requireUncached('./vscode-theme');
+  
   let html = template;
 
   // Replace placeholders
@@ -77,103 +71,9 @@ function processTemplate(template) {
   });
 
   // Inject mock VS Code API before other scripts
-  html = html.replace('<script>', `<script>${MOCK_VSCODE_API}</script>\n  <script>`);
+  const mockAPI = createMockVSCodeAPI(SAMPLE_DATA.TOTAL_LINES);
+  html = html.replace('<script>', `<script>${mockAPI}</script>\n  <script>`);
 
-  // Add VS Code theme variables with theme switcher
-  const vscodeThemeVars = /* html */`
-    <style>
-      :root {
-        /* VS Code Default Dark Theme Colors */
-        --vscode-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        --vscode-font-size: 13px;
-        --vscode-editor-font-family: Menlo, Monaco, "Courier New", monospace;
-        --vscode-editor-font-size: 12px;
-
-        /* Background and foreground */
-        --vscode-editor-background: #1e1e1e;
-        --vscode-foreground: #cccccc;
-        --vscode-descriptionForeground: #ccccccb3;
-        --vscode-errorForeground: #f48771;
-
-        /* Panel and borders */
-        --vscode-panel-border: #2b2b2b;
-        --vscode-textBlockQuote-background: #222222;
-
-        /* Button colors */
-        --vscode-button-background: #0e639c;
-        --vscode-button-foreground: #ffffff;
-        --vscode-button-hoverBackground: #1177bb;
-
-        /* Input colors */
-        --vscode-input-background: #3c3c3c;
-        --vscode-input-foreground: #cccccc;
-        --vscode-input-border: #3c3c3c;
-
-        /* Token colors for syntax highlighting */
-        --vscode-debugTokenExpression-type: #4A90E2;
-        --vscode-debugTokenExpression-string: #ce9178;
-        --vscode-debugTokenExpression-number: #b5cea8;
-        --vscode-debugTokenExpression-boolean: #569cd6;
-        --vscode-debugTokenExpression-value: #cccccc99;
-      }
-
-      /* Light theme colors */
-      body.vscode-light {
-        --vscode-editor-background: #ffffff;
-        --vscode-foreground: #333333;
-        --vscode-descriptionForeground: #717171;
-        --vscode-errorForeground: #e51400;
-
-        --vscode-panel-border: #e7e7e7;
-        --vscode-textBlockQuote-background: #f3f3f3;
-
-        --vscode-button-background: #007acc;
-        --vscode-button-foreground: #ffffff;
-        --vscode-button-hoverBackground: #005a9e;
-
-        --vscode-input-background: #ffffff;
-        --vscode-input-foreground: #333333;
-        --vscode-input-border: #cecece;
-
-        --vscode-debugTokenExpression-string: #a31515;
-        --vscode-debugTokenExpression-number: #098658;
-        --vscode-debugTokenExpression-boolean: #0000ff;
-      }
-
-      /* Theme switcher styles */
-      .theme-switcher {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-        z-index: 1000;
-        display: flex;
-        gap: 10px;
-        background: var(--vscode-textBlockQuote-background);
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid var(--vscode-panel-border);
-      }
-
-      .theme-switcher button {
-        background: var(--vscode-button-background);
-        color: var(--vscode-button-foreground);
-        border: none;
-        padding: 4px 8px;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 12px;
-      }
-
-      .theme-switcher button:hover {
-        background: var(--vscode-button-hoverBackground);
-      }
-
-      .theme-switcher button.active {
-        background: var(--vscode-button-hoverBackground);
-        outline: 2px solid var(--vscode-button-foreground);
-      }
-    </style>
-  `;
 
   // Inject VS Code theme variables after <head>
   html = html.replace('<head>', `<head>\n${vscodeThemeVars}`);
@@ -220,7 +120,7 @@ function processTemplate(template) {
           const data = await response.json();
 
           if (lastModified && data.modified !== lastModified) {
-            console.log('Template changed, reloading...');
+            console.log('Files changed, reloading...');
             location.reload();
           }
 
@@ -256,15 +156,29 @@ const server = http.createServer((req, res) => {
       res.end(html);
     });
   } else if (req.url === '/check-modified') {
-    fs.stat(TEMPLATE_PATH, (err, stats) => {
-      if (err) {
-        res.writeHead(500);
-        res.end(JSON.stringify({ error: err.message }));
-        return;
-      }
-
+    // Check modification times for all watched files
+    const filesToWatch = [TEMPLATE_PATH, SAMPLE_DATA_PATH, VSCODE_THEME_PATH];
+    
+    Promise.all(filesToWatch.map(filePath => 
+      new Promise((resolve, reject) => {
+        fs.stat(filePath, (err, stats) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve({ path: filePath, mtime: stats.mtime.getTime() });
+          }
+        });
+      })
+    ))
+    .then(results => {
+      // Get the most recent modification time
+      const mostRecentMtime = Math.max(...results.map(r => r.mtime));
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ modified: stats.mtime.getTime() }));
+      res.end(JSON.stringify({ modified: mostRecentMtime }));
+    })
+    .catch(err => {
+      res.writeHead(500);
+      res.end(JSON.stringify({ error: err.message }));
     });
   } else {
     res.writeHead(404);
@@ -274,6 +188,9 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
   console.log(`Preview template dev server running at http://localhost:${PORT}`);
-  console.log(`Watching for changes in: ${TEMPLATE_PATH}`);
+  console.log('\nWatching for changes in:');
+  console.log(`  - ${TEMPLATE_PATH}`);
+  console.log(`  - ${SAMPLE_DATA_PATH}`);
+  console.log(`  - ${VSCODE_THEME_PATH}`);
   console.log('\nPress Ctrl+C to stop the server');
 });
