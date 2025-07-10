@@ -110,9 +110,11 @@ function processTemplate(template) {
         --vscode-input-border: #3c3c3c;
 
         /* Token colors for syntax highlighting */
+        --vscode-debugTokenExpression-type: #4A90E2;
         --vscode-debugTokenExpression-string: #ce9178;
         --vscode-debugTokenExpression-number: #b5cea8;
         --vscode-debugTokenExpression-boolean: #569cd6;
+        --vscode-debugTokenExpression-value: #cccccc99;
       }
 
       /* Light theme colors */

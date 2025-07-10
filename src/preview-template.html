@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JSONL Preview</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
   <style>
     body {
       font-family: var(--vscode-font-family);
@@ -14,6 +13,9 @@
       margin: 0;
       padding: 20px;
       line-height: 1.6;
+    }
+    code {
+      background-color: transparent;
     }
     .line-info {
       color: var(--vscode-descriptionForeground);
@@ -39,16 +41,20 @@
       font-size: var(--vscode-editor-font-size);
     }
     /* Override Prism theme colors to match VS Code */
-    .token.property,
+    .token.property {
+      color: var(--vscode-debugTokenExpression-type);
+    }
     .token.string {
       color: var(--vscode-debugTokenExpression-string);
     }
-    .token.number,
-    .token.boolean {
+    .token.number {
       color: var(--vscode-debugTokenExpression-number);
     }
-    .token.null {
+    .token.boolean {
       color: var(--vscode-debugTokenExpression-boolean);
+    }
+    .token.null {
+      color: var(--vscode-debugTokenExpression-value);
     }
     .token.punctuation {
       color: var(--vscode-foreground);
