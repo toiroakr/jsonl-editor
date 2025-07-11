@@ -2,3 +2,4 @@
 {"name": "Jane Smith", "age": 25, "email": "jane@example.com", "city": "New York"}
 {"id": 123, "product": "laptop", "price": 999.99, "specs": {"ram": "16GB", "storage": "512GB"}}
 {"timestamp": "2025-01-07T10:30:00Z", "event": "login", "user_id": 456}
+{"multiline": "first line\nsecond line\nthird line", "active": true, "length": 3}

@@ -370,8 +370,16 @@ class JsonlPreviewPanel {
 
       if (lineText) {
         try {
+          const multilineMarker = "[toiroakr.jsonl-editor.multiline]";
           const parsed = JSON.parse(lineText);
-          jsonContent = JSON.stringify(parsed, null, 2);
+          jsonContent = JSON.stringify(parsed, (key, value) => {
+            // Convert strings containing newlines to arrays
+            if (typeof value === 'string' && value.includes('\n')) {
+              const lines = value.split('\n');
+              return [multilineMarker, ...lines];
+            }
+            return value;
+          }, 2).replace(new RegExp(`\\[\\n\\s+"\\${multilineMarker}",\\n`, 'g'), `[ // Transformed for preview multiline string\n`);
         } catch (e) {
           jsonContent = 'Invalid JSON on line ' + lineNumber;
         }
@@ -392,7 +400,7 @@ class JsonlPreviewPanel {
     if (jsonContent.startsWith('Invalid') || jsonContent.startsWith('No') || jsonContent === 'Empty line') {
       content = `<div class="error">${this._escapeHtml(jsonContent)}</div>`;
     } else {
-      content = `<pre><code class="language-json">${this._escapeHtml(jsonContent)}</code></pre>`;
+      content = `<pre><code class="language-json5">${this._escapeHtml(jsonContent)}</code></pre>`;
     }
 
     // Replace placeholders in template
