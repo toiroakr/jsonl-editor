@@ -28,20 +28,18 @@ const esbuildProblemMatcherPlugin = {
 /**
  * @type {import('esbuild').Plugin}
  */
+const templateHtmlSrcPath = path.join(__dirname, 'src', 'preview-template.html');
+const templateHtmlDestPath = path.join(__dirname, 'dist', 'preview-template.html');
 const copyHtmlPlugin = {
 	name: 'copy-html',
 	setup(build) {
-		build.onEnd(() => {
-			const srcPath = path.join(__dirname, 'src', 'preview-template.html');
-			const destPath = path.join(__dirname, 'dist', 'preview-template.html');
-			
+  		build.onEnd(() => {
 			// Ensure dist directory exists
-			if (!fs.existsSync(path.dirname(destPath))) {
-				fs.mkdirSync(path.dirname(destPath), { recursive: true });
+			if (!fs.existsSync(path.dirname(templateHtmlDestPath))) {
+				fs.mkdirSync(path.dirname(templateHtmlDestPath), { recursive: true });
 			}
-			
 			// Copy HTML file
-			fs.copyFileSync(srcPath, destPath);
+			fs.copyFileSync(templateHtmlSrcPath, templateHtmlDestPath);
 		});
 	},
 };
@@ -68,6 +66,12 @@ async function main() {
 	});
 	if (watch) {
 		await ctx.watch();
+
+		fs.watch(templateHtmlSrcPath, async (eventType) => {
+			if (eventType === 'change') {
+				await ctx.rebuild();
+			}
+		});
 	} else {
 		await ctx.rebuild();
 		await ctx.dispose();
