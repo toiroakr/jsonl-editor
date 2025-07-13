@@ -4,14 +4,10 @@ All notable changes to the "jsonl-editor" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [0.3.0]
+## [0.3.x]
 
 - Transform multiline string to string array
 
-## [0.2.1]
-
-- Improve colors
-
-## [0.2.0]
+## [0.2.x]
 
 - Initial release

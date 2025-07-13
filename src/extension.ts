@@ -379,7 +379,7 @@ class JsonlPreviewPanel {
               return [multilineMarker, ...lines];
             }
             return value;
-          }, 2).replace(new RegExp(`"\\${multilineMarker}",`, 'g'), `// Displayed as array for multiline string visibility`);
+          }, 2).replace(new RegExp(`"\\${multilineMarker}",`, 'g'), `// Displayed as array for multiline string readability`);
         } catch (e) {
           jsonContent = 'Invalid JSON on line ' + lineNumber;
         }
