@@ -349,6 +349,7 @@ class JsonlPreviewPanel {
     let jsonContent = '';
     let lineNumber = 0;
     let totalLines = 0;
+    let lineText = '';
 
     if (this._currentEditor) {
       const document = this._currentEditor.document;
@@ -366,13 +367,13 @@ class JsonlPreviewPanel {
 
       // Get the line content
       const line = document.lineAt(this._currentLine);
-      const lineText = line.text.trim();
+      lineText = line.text.trim();
 
       if (lineText) {
         try {
           const multilineMarker = "[toiroakr.jsonl-editor.multiline]";
           const parsed = JSON.parse(lineText);
-          jsonContent = JSON.stringify(parsed, (key, value) => {
+          jsonContent = JSON.stringify(parsed, (_, value) => {
             // Convert strings containing newlines to arrays
             if (typeof value === 'string' && value.includes('\n')) {
               const lines = value.split('\n');
@@ -410,6 +411,7 @@ class JsonlPreviewPanel {
     html = html.replace('{{PREV_DISABLED}}', lineNumber <= 1 ? 'disabled' : '');
     html = html.replace('{{NEXT_DISABLED}}', lineNumber >= totalLines ? 'disabled' : '');
     html = html.replace('{{CONTENT}}', content);
+    html = html.replace('{{ORIGINAL_CONTENT}}', lineText);
 
     return html;
   }

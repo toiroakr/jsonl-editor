@@ -4,6 +4,10 @@ All notable changes to the "jsonl-editor" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.4.x]
+
+- Add copy button to preview
+
 ## [0.3.x]
 
 - Transform multiline string to string array

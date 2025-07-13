@@ -97,6 +97,32 @@
     .line-counter {
       color: var(--vscode-descriptionForeground);
     }
+    .json-container {
+      position: relative;
+    }
+    .copy-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--vscode-button-background);
+      color: var(--vscode-button-foreground);
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: opacity 0.2s;
+      display: none;
+    }
+    pre + .copy-button {
+      display: block;
+    }
+    .copy-button:hover {
+      background-color: var(--vscode-button-hoverBackground);
+    }
+    .copy-button.copied {
+      background-color: var(--vscode-testing-iconPassed);
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
@@ -109,8 +135,15 @@
     <span class="line-counter">/ {{TOTAL_LINES}}</span>
     <button onclick="navigate('next')" {{NEXT_DISABLED}}>Next&nbsp;&nbsp;&gt;</button>
   </div>
-  {{CONTENT}}
+  <div class="json-container">
+    {{CONTENT}}
+    <button class="copy-button" onclick="copyJson()">Copy JSON</button>
+    <pre class="original-json" hidden>{{ORIGINAL_CONTENT}}</pre>
+  </div>
   <script>
+    // Replace placeholders with actual values
+    let originalJsonData = null;
+
     // Highlight the code
     Prism.highlightAll();
 
@@ -141,6 +174,32 @@
         goToLine(this.value);
       }
     });
+
+    // Copy functionality
+    function copyJson() {
+      const content = JSON.stringify(
+        JSON.parse(document.querySelector('.original-json').textContent),
+        null,
+        2
+      );
+      navigator.clipboard.writeText(content).then(() => {
+        const button = document.querySelector('.copy-button');
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.classList.add('copied');
+
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy:', err);
+        vscode.postMessage({
+          command: 'showError',
+          message: 'Failed to copy JSON to clipboard'
+        });
+      });
+    }
   </script>
 </body>
 </html>
