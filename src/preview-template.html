@@ -134,6 +134,7 @@
     <input type="number" id="lineInput" value="{{LINE_NUMBER}}" min="1" max="{{TOTAL_LINES}}" onchange="goToLine(this.value)">
     <span class="line-counter">/ {{TOTAL_LINES}}</span>
     <button onclick="navigate('next')" {{NEXT_DISABLED}}>Next&nbsp;&nbsp;&gt;</button>
+    <button onclick="editCurrentLine()">Edit</button>
   </div>
   <div class="json-container">
     {{CONTENT}}
@@ -198,6 +199,13 @@
           command: 'showError',
           message: 'Failed to copy JSON to clipboard'
         });
+      });
+    }
+
+    // Edit functionality
+    function editCurrentLine() {
+      vscode.postMessage({
+        command: 'editLine'
       });
     }
   </script>

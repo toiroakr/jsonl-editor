@@ -1,7 +1,7 @@
-import * as vscode from 'vscode';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-import * as os from 'node:os';
+import * as vscode from "vscode";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import * as os from "node:os";
 
 interface EditTarget {
   body: string;
@@ -22,10 +22,10 @@ class TempFileManager {
   constructor() {
     // Register event listener when editor is closed
     this._disposables.push(
-      vscode.workspace.onDidCloseTextDocument(document => {
+      vscode.workspace.onDidCloseTextDocument((document) => {
         const filePath = document.uri.fsPath;
         if (this._tempFiles.has(filePath)) {
-          this.deleteTempFile(filePath).catch(err => {
+          this.deleteTempFile(filePath).catch((err) => {
             console.error(`Failed to delete temporary file: ${err}`);
           });
         }
@@ -34,11 +34,13 @@ class TempFileManager {
 
     // Register event listener when file is saved
     this._disposables.push(
-      vscode.workspace.onDidSaveTextDocument(async document => {
+      vscode.workspace.onDidSaveTextDocument(async (document) => {
         const filePath = document.uri.fsPath;
         if (this._tempFiles.has(filePath)) {
-          await this.saveToOriginalDocument(document).catch(err => {
-            vscode.window.showErrorMessage(`Failed to save to original document: ${err}`);
+          await this.saveToOriginalDocument(document).catch((err) => {
+            vscode.window.showErrorMessage(
+              `Failed to save to original document: ${err}`
+            );
           });
         }
       })
@@ -46,7 +48,9 @@ class TempFileManager {
   }
 
   // Save the temporary file content to the original document
-  public async saveToOriginalDocument(document: vscode.TextDocument): Promise<void> {
+  public async saveToOriginalDocument(
+    document: vscode.TextDocument
+  ): Promise<void> {
     const filePath = document.uri.fsPath;
     const tempFileInfo = this._tempFiles.get(filePath);
 
@@ -55,8 +59,12 @@ class TempFileManager {
     }
 
     let jsonContent = document.getText();
-    const originalDocument = await vscode.workspace.openTextDocument(tempFileInfo.originalUri);
-    const originalEditor = await vscode.window.showTextDocument(originalDocument);
+    const originalDocument = await vscode.workspace.openTextDocument(
+      tempFileInfo.originalUri
+    );
+    const originalEditor = await vscode.window.showTextDocument(
+      originalDocument
+    );
 
     try {
       // Validate and minify JSON
@@ -64,7 +72,7 @@ class TempFileManager {
         const parsed = JSON.parse(jsonContent.trim());
         jsonContent = JSON.stringify(parsed);
       } catch (e) {
-        vscode.window.showErrorMessage('Invalid JSON format');
+        vscode.window.showErrorMessage("Invalid JSON format");
         return;
       }
 
@@ -75,9 +83,12 @@ class TempFileManager {
       });
 
       const tabs = vscode.window.tabGroups.all
-        .flatMap(group => group.tabs)
-        .filter(tab => tab.input instanceof vscode.TabInputText &&
-          tab.input.uri.fsPath === document.uri.fsPath);
+        .flatMap((group) => group.tabs)
+        .filter(
+          (tab) =>
+            tab.input instanceof vscode.TabInputText &&
+            tab.input.uri.fsPath === document.uri.fsPath
+        );
       await vscode.window.tabGroups.close(tabs);
 
       await this.deleteTempFile(filePath);
@@ -85,19 +96,23 @@ class TempFileManager {
       if (error instanceof Error) {
         vscode.window.showErrorMessage(`Error: ${error.message}`);
       } else {
-        vscode.window.showErrorMessage('An unknown error occurred');
+        vscode.window.showErrorMessage("An unknown error occurred");
       }
       throw error;
     }
   }
 
-  public async createTempFile(content: string, originalUri: vscode.Uri, lineNumber: number): Promise<string> {
+  public async createTempFile(
+    content: string,
+    originalUri: vscode.Uri,
+    lineNumber: number
+  ): Promise<string> {
     const tempDir = os.tmpdir();
     const timestamp = Date.now();
     const fileName = `jsonl_line_${timestamp}.json`;
     const filePath = path.join(tempDir, fileName);
 
-    await fs.promises.writeFile(filePath, content, 'utf8');
+    await fs.promises.writeFile(filePath, content, "utf8");
 
     this._tempFiles.set(filePath, {
       filePath,
@@ -129,8 +144,8 @@ class TempFileManager {
 
   // Release resources
   public dispose(): void {
-    this._disposables.forEach(d => d.dispose());
-    this.deleteAllTempFiles().catch(err => {
+    this._disposables.forEach((d) => d.dispose());
+    this.deleteAllTempFiles().catch((err) => {
       console.error(`Failed to delete all temporary files: ${err}`);
     });
   }
@@ -154,7 +169,7 @@ function getJsonlLineTarget(editor: vscode.TextEditor): EditTarget | null {
     JSON.parse(lineText);
     return {
       body: lineText,
-      lineNumber: lineNumber
+      lineNumber: lineNumber,
     };
   } catch (e) {
     // Not valid JSON
@@ -172,10 +187,11 @@ class JsonlPreviewPanel {
   private _isManualNavigation: boolean = false;
   private _htmlTemplate: string | undefined;
 
-  public static createOrShow(extensionUri: vscode.Uri, editor?: vscode.TextEditor) {
-    const column = editor
-      ? editor.viewColumn
-      : undefined;
+  public static createOrShow(
+    extensionUri: vscode.Uri,
+    editor?: vscode.TextEditor
+  ) {
+    const column = editor ? editor.viewColumn : undefined;
 
     // If we already have a panel, show it.
     if (JsonlPreviewPanel.currentPanel) {
@@ -183,7 +199,8 @@ class JsonlPreviewPanel {
       // Update editor if provided
       if (editor) {
         JsonlPreviewPanel.currentPanel._currentEditor = editor;
-        JsonlPreviewPanel.currentPanel._currentLine = editor.selection.start.line;
+        JsonlPreviewPanel.currentPanel._currentLine =
+          editor.selection.start.line;
         JsonlPreviewPanel.currentPanel._update();
       }
       return JsonlPreviewPanel.currentPanel;
@@ -191,35 +208,46 @@ class JsonlPreviewPanel {
 
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
-      'jsonlPreview',
-      'JSONL Preview',
+      "jsonlPreview",
+      "JSONL Preview",
       vscode.ViewColumn.Two,
       {
         enableScripts: true,
-        retainContextWhenHidden: true
+        retainContextWhenHidden: true,
       }
     );
 
-    JsonlPreviewPanel.currentPanel = new JsonlPreviewPanel(panel, extensionUri, editor);
+    JsonlPreviewPanel.currentPanel = new JsonlPreviewPanel(
+      panel,
+      extensionUri,
+      editor
+    );
     return JsonlPreviewPanel.currentPanel;
   }
 
-  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri, editor?: vscode.TextEditor) {
+  private constructor(
+    panel: vscode.WebviewPanel,
+    extensionUri: vscode.Uri,
+    editor?: vscode.TextEditor
+  ) {
     this._panel = panel;
 
     // Load HTML template
-    const templatePath = path.join(__dirname, 'preview-template.html');
+    const templatePath = path.join(__dirname, "preview-template.html");
     try {
-      this._htmlTemplate = fs.readFileSync(templatePath, 'utf8');
+      this._htmlTemplate = fs.readFileSync(templatePath, "utf8");
     } catch (e) {
-      console.error('Failed to load preview template:', e);
+      console.error("Failed to load preview template:", e);
     }
 
     // Initialize with provided editor or current editor
     if (editor) {
       this._currentEditor = editor;
       this._currentLine = editor.selection.start.line;
-    } else if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.uri.path.endsWith('.jsonl')) {
+    } else if (
+      vscode.window.activeTextEditor &&
+      vscode.window.activeTextEditor.document.uri.path.endsWith(".jsonl")
+    ) {
       this._currentEditor = vscode.window.activeTextEditor;
       this._currentLine = this._currentEditor.selection.start.line;
     }
@@ -243,8 +271,11 @@ class JsonlPreviewPanel {
 
     // Handle cursor position changes
     vscode.window.onDidChangeTextEditorSelection(
-      e => {
-        if (e.textEditor.document.uri.path.endsWith('.jsonl') && !this._isManualNavigation) {
+      (e) => {
+        if (
+          e.textEditor.document.uri.path.endsWith(".jsonl") &&
+          !this._isManualNavigation
+        ) {
           this._currentEditor = e.textEditor;
           this._currentLine = e.textEditor.selection.start.line;
           this._update();
@@ -256,8 +287,8 @@ class JsonlPreviewPanel {
 
     // Handle active editor changes
     vscode.window.onDidChangeActiveTextEditor(
-      editor => {
-        if (editor && editor.document.uri.path.endsWith('.jsonl')) {
+      (editor) => {
+        if (editor && editor.document.uri.path.endsWith(".jsonl")) {
           this._currentEditor = editor;
           this._update();
         }
@@ -268,13 +299,16 @@ class JsonlPreviewPanel {
 
     // Handle messages from the webview
     this._panel.webview.onDidReceiveMessage(
-      message => {
+      (message) => {
         switch (message.command) {
-          case 'goToLine':
+          case "goToLine":
             this._goToLine(message.line);
             return;
-          case 'navigate':
+          case "navigate":
             this._navigate(message.direction);
+            return;
+          case "editLine":
+            this._editCurrentLine();
             return;
         }
       },
@@ -304,7 +338,9 @@ class JsonlPreviewPanel {
 
     const document = this._currentEditor.document;
     if (lineNumber < 1 || lineNumber > document.lineCount) {
-      vscode.window.showErrorMessage(`Line ${lineNumber} is out of range (1-${document.lineCount})`);
+      vscode.window.showErrorMessage(
+        `Line ${lineNumber} is out of range (1-${document.lineCount})`
+      );
       return;
     }
 
@@ -318,15 +354,18 @@ class JsonlPreviewPanel {
     }, 500);
   }
 
-  private _navigate(direction: 'prev' | 'next') {
+  private _navigate(direction: "prev" | "next") {
     if (!this._currentEditor) {
       return;
     }
 
     const document = this._currentEditor.document;
-    if (direction === 'prev' && this._currentLine > 0) {
+    if (direction === "prev" && this._currentLine > 0) {
       this._currentLine--;
-    } else if (direction === 'next' && this._currentLine < document.lineCount - 1) {
+    } else if (
+      direction === "next" &&
+      this._currentLine < document.lineCount - 1
+    ) {
       this._currentLine++;
     }
 
@@ -339,17 +378,37 @@ class JsonlPreviewPanel {
     }, 500);
   }
 
+  private async _editCurrentLine() {
+    if (!this._currentEditor) {
+      vscode.window.showErrorMessage("No active editor");
+      return;
+    }
+
+    // Show the editor and set cursor position
+    await vscode.window.showTextDocument(
+      this._currentEditor.document,
+      this._currentEditor.viewColumn
+    );
+
+    // Set the cursor to the current line
+    const position = new vscode.Position(this._currentLine, 0);
+    this._currentEditor.selection = new vscode.Selection(position, position);
+
+    // Execute the edit command
+    await vscode.commands.executeCommand("jsonl-editor.editJsonlLine");
+  }
+
   private _update() {
     const webview = this._panel.webview;
-    this._panel.title = 'JSONL Preview';
+    this._panel.title = "JSONL Preview";
     this._panel.webview.html = this._getHtmlForWebview(webview);
   }
 
   private _getHtmlForWebview(_webview: vscode.Webview) {
-    let jsonContent = '';
+    let jsonContent = "";
     let lineNumber = 0;
     let totalLines = 0;
-    let lineText = '';
+    let lineText = "";
 
     if (this._currentEditor) {
       const document = this._currentEditor.document;
@@ -373,58 +432,218 @@ class JsonlPreviewPanel {
         try {
           const multilineMarker = "[toiroakr.jsonl-editor.multiline]";
           const parsed = JSON.parse(lineText);
-          jsonContent = JSON.stringify(parsed, (_, value) => {
-            // Convert strings containing newlines to arrays
-            if (typeof value === 'string' && value.includes('\n')) {
-              const lines = value.split('\n');
-              return [multilineMarker, ...lines];
-            }
-            return value;
-          }, 2).replace(new RegExp(`"\\${multilineMarker}",`, 'g'), `// Displayed as array for multiline string readability`);
+          jsonContent = JSON.stringify(
+            parsed,
+            (_, value) => {
+              // Convert strings containing newlines to arrays
+              if (typeof value === "string" && value.includes("\n")) {
+                const lines = value.split("\n");
+                return [multilineMarker, ...lines];
+              }
+              return value;
+            },
+            2
+          ).replace(
+            new RegExp(`"\\${multilineMarker}",`, "g"),
+            `// Displayed as array for multiline string readability`
+          );
         } catch (e) {
-          jsonContent = 'Invalid JSON on line ' + lineNumber;
+          jsonContent = "Invalid JSON on line " + lineNumber;
         }
       } else {
-        jsonContent = 'Empty line';
+        jsonContent = "Empty line";
       }
     } else {
-      jsonContent = 'No JSONL file is active';
+      jsonContent = "No JSONL file is active";
     }
 
     // If template is not loaded, return fallback HTML
     if (!this._htmlTemplate) {
-      return '<html><body><h1>Error: Template not loaded</h1></body></html>';
+      return "<html><body><h1>Error: Template not loaded</h1></body></html>";
     }
 
     // Prepare content based on JSON validity
-    let content = '';
-    if (jsonContent.startsWith('Invalid') || jsonContent.startsWith('No') || jsonContent === 'Empty line') {
+    let content = "";
+    if (
+      jsonContent.startsWith("Invalid") ||
+      jsonContent.startsWith("No") ||
+      jsonContent === "Empty line"
+    ) {
       content = `<div class="error">${this._escapeHtml(jsonContent)}</div>`;
     } else {
-      content = `<pre><code class="language-json5">${this._escapeHtml(jsonContent)}</code></pre>`;
+      content = `<pre><code class="language-json5">${this._escapeHtml(
+        jsonContent
+      )}</code></pre>`;
     }
 
     // Replace placeholders in template
     let html = this._htmlTemplate;
     html = html.replace(/{{LINE_NUMBER}}/g, lineNumber.toString());
     html = html.replace(/{{TOTAL_LINES}}/g, totalLines.toString());
-    html = html.replace('{{PREV_DISABLED}}', lineNumber <= 1 ? 'disabled' : '');
-    html = html.replace('{{NEXT_DISABLED}}', lineNumber >= totalLines ? 'disabled' : '');
-    html = html.replace('{{CONTENT}}', content);
-    html = html.replace('{{ORIGINAL_CONTENT}}', lineText);
+    html = html.replace("{{PREV_DISABLED}}", lineNumber <= 1 ? "disabled" : "");
+    html = html.replace(
+      "{{NEXT_DISABLED}}",
+      lineNumber >= totalLines ? "disabled" : ""
+    );
+    html = html.replace("{{CONTENT}}", content);
+    html = html.replace("{{ORIGINAL_CONTENT}}", lineText);
 
     return html;
   }
 
   private _escapeHtml(text: string): string {
     const map: { [key: string]: string } = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;",
     };
-    return text.replace(/[&<>"']/g, m => map[m]);
+    return text.replace(/[&<>"']/g, (m) => map[m]);
+  }
+}
+
+// DocumentLink provider for JSONL files
+class JsonlDocumentLinkProvider implements vscode.DocumentLinkProvider {
+  public provideDocumentLinks(
+    document: vscode.TextDocument
+  ): vscode.DocumentLink[] | undefined {
+    if (!document.uri.path.endsWith(".jsonl")) {
+      return undefined;
+    }
+
+    const links: vscode.DocumentLink[] = [];
+
+    for (let i = 0; i < document.lineCount; i++) {
+      const line = document.lineAt(i);
+      const lineText = line.text.trim();
+
+      // Skip empty lines
+      if (!lineText) {
+        continue;
+      }
+
+      // Check if the line is valid JSON
+      try {
+        JSON.parse(lineText);
+
+        // Create a link for the entire line
+        const range = line.range;
+        const commandUri = vscode.Uri.parse(
+          `command:jsonl-editor.editJsonlLineAt?${encodeURIComponent(
+            JSON.stringify([document.uri, i])
+          )}`
+        );
+
+        const link = new vscode.DocumentLink(range, commandUri);
+        link.tooltip = "Cmd+Click to edit this JSON line";
+
+        links.push(link);
+      } catch (e) {
+        // Skip invalid JSON lines
+        continue;
+      }
+    }
+
+    return links;
+  }
+}
+
+// Code Action provider for JSONL files
+class JsonlCodeActionProvider implements vscode.CodeActionProvider {
+  public provideCodeActions(
+    document: vscode.TextDocument,
+    range: vscode.Range | vscode.Selection
+  ): vscode.CodeAction[] | undefined {
+    if (!document.uri.path.endsWith(".jsonl")) {
+      return undefined;
+    }
+
+    const line = document.lineAt(range.start.line);
+    const lineText = line.text.trim();
+
+    // Skip empty lines
+    if (!lineText) {
+      return undefined;
+    }
+
+    // Check if the line is valid JSON
+    try {
+      JSON.parse(lineText);
+
+      const actions: vscode.CodeAction[] = [];
+
+      // Edit action
+      const editAction = new vscode.CodeAction(
+        "Edit JSON line",
+        vscode.CodeActionKind.Empty
+      );
+      editAction.command = {
+        title: "Edit JSON line",
+        command: "jsonl-editor.editJsonlLineAt",
+        arguments: [document.uri, range.start.line],
+      };
+
+      // Preview action
+      const previewAction = new vscode.CodeAction(
+        "Preview JSON line",
+        vscode.CodeActionKind.Empty
+      );
+      previewAction.command = {
+        title: "Preview JSON line",
+        command: "jsonl-editor.previewJsonlLine",
+        arguments: [document.uri, range.start.line],
+      };
+
+      actions.push(editAction);
+      actions.push(previewAction);
+
+      return actions;
+    } catch (e) {
+      // Not valid JSON, no actions
+      return undefined;
+    }
+  }
+}
+
+// Code Lens provider for JSONL files
+class JsonlCodeLensProvider implements vscode.CodeLensProvider {
+  private _onDidChangeCodeLenses: vscode.EventEmitter<void> =
+    new vscode.EventEmitter<void>();
+  public readonly onDidChangeCodeLenses: vscode.Event<void> =
+    this._onDidChangeCodeLenses.event;
+
+  public provideCodeLenses(
+    document: vscode.TextDocument
+  ): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
+    if (!document.uri.path.endsWith(".jsonl")) {
+      return [];
+    }
+
+    const codeLenses: vscode.CodeLens[] = [];
+
+    // Add "Show Preview" code lens on first line
+    if (document.lineCount > 0) {
+      const range = new vscode.Range(0, 0, 0, 0);
+      const codeLens = new vscode.CodeLens(range, {
+        title: "$(eye) Show Preview",
+        command: "jsonl-editor.previewJsonlLine",
+        arguments: [document.uri, 0],
+      });
+      codeLenses.push(codeLens);
+    }
+
+    return codeLenses;
+  }
+
+  public resolveCodeLens(
+    codeLens: vscode.CodeLens
+  ): vscode.CodeLens | Thenable<vscode.CodeLens> {
+    return codeLens;
+  }
+
+  public refresh(): void {
+    this._onDidChangeCodeLenses.fire();
   }
 }
 
@@ -432,66 +651,194 @@ export function activate(context: vscode.ExtensionContext) {
   const tempFileManager = new TempFileManager();
   context.subscriptions.push({ dispose: () => tempFileManager.dispose() });
 
-  const editJsonlLineCommand = vscode.commands.registerCommand('jsonl-editor.editJsonlLine', async () => {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-      vscode.window.showErrorMessage('No active editor');
-      return;
-    }
-
-    const target = getJsonlLineTarget(editor);
-    if (!target) {
-      vscode.window.showErrorMessage('No valid JSON found on the current line.');
-      return;
-    }
-
-    try {
-      let jsonContent: string;
-
-      try {
-        // Parse and format the JSON line
-        const parsed = JSON.parse(target.body);
-        jsonContent = JSON.stringify(parsed, null, 2);
-      } catch (e) {
-        if (e instanceof Error) {
-          vscode.window.showErrorMessage(`Invalid JSON: ${e.message}`);
-        } else {
-          vscode.window.showErrorMessage('Invalid JSON format');
-        }
+  const editJsonlLineCommand = vscode.commands.registerCommand(
+    "jsonl-editor.editJsonlLine",
+    async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        vscode.window.showErrorMessage("No active editor");
         return;
       }
 
-      const tempFilePath = await tempFileManager.createTempFile(
-        jsonContent,
-        editor.document.uri,
-        target.lineNumber,
-      );
+      const target = getJsonlLineTarget(editor);
+      if (!target) {
+        vscode.window.showErrorMessage(
+          "No valid JSON found on the current line."
+        );
+        return;
+      }
 
-      const document = await vscode.workspace.openTextDocument(vscode.Uri.file(tempFilePath));
-      await vscode.window.showTextDocument(document, { preview: false });
-      vscode.languages.setTextDocumentLanguage(document, 'json');
-      vscode.window.showInformationMessage('JSONL line opened as JSON. Edit and save (Ctrl+S) to update the original line.');
-    } catch (error) {
-      if (error instanceof Error) {
-        vscode.window.showErrorMessage(`Error: ${error.message} ${error.stack}`);
-      } else {
-        vscode.window.showErrorMessage('An unknown error occurred');
+      try {
+        let jsonContent: string;
+
+        try {
+          // Parse and format the JSON line
+          const parsed = JSON.parse(target.body);
+          jsonContent = JSON.stringify(parsed, null, 2);
+        } catch (e) {
+          if (e instanceof Error) {
+            vscode.window.showErrorMessage(`Invalid JSON: ${e.message}`);
+          } else {
+            vscode.window.showErrorMessage("Invalid JSON format");
+          }
+          return;
+        }
+
+        const tempFilePath = await tempFileManager.createTempFile(
+          jsonContent,
+          editor.document.uri,
+          target.lineNumber
+        );
+
+        const document = await vscode.workspace.openTextDocument(
+          vscode.Uri.file(tempFilePath)
+        );
+        await vscode.window.showTextDocument(document, { preview: false });
+        vscode.languages.setTextDocumentLanguage(document, "json");
+        vscode.window.showInformationMessage(
+          "JSONL line opened as JSON. Edit and save (Ctrl+S) to update the original line."
+        );
+      } catch (error) {
+        if (error instanceof Error) {
+          vscode.window.showErrorMessage(
+            `Error: ${error.message} ${error.stack}`
+          );
+        } else {
+          vscode.window.showErrorMessage("An unknown error occurred");
+        }
       }
     }
-  });
+  );
 
-  const previewJsonlCommand = vscode.commands.registerCommand('jsonl-editor.previewJsonl', () => {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor || !editor.document.uri.path.endsWith('.jsonl')) {
-      vscode.window.showErrorMessage('Please open a JSONL file first');
-      return;
+  // Command to edit a specific line (called from Code Lens)
+  const editJsonlLineAtCommand = vscode.commands.registerCommand(
+    "jsonl-editor.editJsonlLineAt",
+    async (uri: vscode.Uri, lineNumber: number) => {
+      try {
+        const document = await vscode.workspace.openTextDocument(uri);
+        const editor = await vscode.window.showTextDocument(document);
+
+        // Set the cursor to the specified line
+        const position = new vscode.Position(lineNumber, 0);
+        editor.selection = new vscode.Selection(position, position);
+
+        // Get the line content
+        const line = document.lineAt(lineNumber);
+        const lineText = line.text.trim();
+
+        if (!lineText) {
+          vscode.window.showErrorMessage("Empty line");
+          return;
+        }
+
+        try {
+          // Parse and format the JSON line
+          const parsed = JSON.parse(lineText);
+          const jsonContent = JSON.stringify(parsed, null, 2);
+
+          const tempFilePath = await tempFileManager.createTempFile(
+            jsonContent,
+            document.uri,
+            lineNumber
+          );
+
+          const tempDocument = await vscode.workspace.openTextDocument(
+            vscode.Uri.file(tempFilePath)
+          );
+          await vscode.window.showTextDocument(tempDocument, {
+            preview: false,
+          });
+          vscode.languages.setTextDocumentLanguage(tempDocument, "json");
+          vscode.window.showInformationMessage(
+            "JSONL line opened as JSON. Edit and save (Ctrl+S) to update the original line."
+          );
+        } catch (e) {
+          if (e instanceof Error) {
+            vscode.window.showErrorMessage(`Invalid JSON: ${e.message}`);
+          } else {
+            vscode.window.showErrorMessage("Invalid JSON format");
+          }
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          vscode.window.showErrorMessage(`Error: ${error.message}`);
+        } else {
+          vscode.window.showErrorMessage("An unknown error occurred");
+        }
+      }
     }
+  );
 
-    JsonlPreviewPanel.createOrShow(context.extensionUri, editor);
-  });
+  const previewJsonlCommand = vscode.commands.registerCommand(
+    "jsonl-editor.previewJsonl",
+    () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor || !editor.document.uri.path.endsWith(".jsonl")) {
+        vscode.window.showErrorMessage("Please open a JSONL file first");
+        return;
+      }
+
+      JsonlPreviewPanel.createOrShow(context.extensionUri, editor);
+    }
+  );
+
+  // Command to preview a specific line (called from Code Action)
+  const previewJsonlLineCommand = vscode.commands.registerCommand(
+    "jsonl-editor.previewJsonlLine",
+    async (uri: vscode.Uri, lineNumber: number) => {
+      try {
+        const document = await vscode.workspace.openTextDocument(uri);
+        const editor = await vscode.window.showTextDocument(document);
+
+        // Set the cursor to the specified line
+        const position = new vscode.Position(lineNumber, 0);
+        editor.selection = new vscode.Selection(position, position);
+
+        // Show preview panel
+        JsonlPreviewPanel.createOrShow(context.extensionUri, editor);
+      } catch (error) {
+        if (error instanceof Error) {
+          vscode.window.showErrorMessage(`Error: ${error.message}`);
+        } else {
+          vscode.window.showErrorMessage("An unknown error occurred");
+        }
+      }
+    }
+  );
+
+  // Register DocumentLink provider
+  const documentLinkProvider = new JsonlDocumentLinkProvider();
+  const documentLinkProviderDisposable =
+    vscode.languages.registerDocumentLinkProvider(
+      { language: "jsonl", scheme: "file" },
+      documentLinkProvider
+    );
+
+  // Register Code Action provider
+  const codeActionProvider = new JsonlCodeActionProvider();
+  const codeActionProviderDisposable =
+    vscode.languages.registerCodeActionsProvider(
+      { language: "jsonl", scheme: "file" },
+      codeActionProvider,
+      {
+        providedCodeActionKinds: [vscode.CodeActionKind.Empty],
+      }
+    );
+
+  // Register Code Lens provider
+  const codeLensProvider = new JsonlCodeLensProvider();
+  const codeLensProviderDisposable = vscode.languages.registerCodeLensProvider(
+    { language: "jsonl", scheme: "file" },
+    codeLensProvider
+  );
 
   context.subscriptions.push(editJsonlLineCommand);
+  context.subscriptions.push(editJsonlLineAtCommand);
   context.subscriptions.push(previewJsonlCommand);
+  context.subscriptions.push(previewJsonlLineCommand);
+  context.subscriptions.push(documentLinkProviderDisposable);
+  context.subscriptions.push(codeActionProviderDisposable);
+  context.subscriptions.push(codeLensProviderDisposable);
 }
 
 export function deactivate() {
