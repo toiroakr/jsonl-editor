@@ -3,7 +3,7 @@
   "displayName": "JSONL Edit/Preview",
   "description": "Edit individual JSON lines in JSONL files",
   "publisher": "toiroakr",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "icon": "assets/icon.png",
   "categories": [
     "Other"
@@ -45,6 +45,16 @@
           "group": "navigation"
         }
       ]
+    },
+    "configuration": {
+      "title": "JSONL Editor",
+      "properties": {
+        "jsonl-editor.disableEditLink": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable the Cmd/Ctrl+Click document link on JSON lines. Enable this if you find the underline VS Code renders under each JSON line distracting; you can still edit lines via Code Lens, Quick Fix, or the command palette."
+        }
+      }
     }
   },
   "scripts": {

@@ -4,6 +4,11 @@ All notable changes to the "jsonl-editor" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.5.1] - 2026-04-28
+
+### Added
+- Setting `jsonl-editor.disableEditLink` to suppress the underline VS Code renders under each JSON line (caused by the document link used for Cmd/Ctrl+Click editing). Disabling the link still leaves Code Lens, Quick Fix, and the command palette as ways to edit a line. ([#1](https://github.com/toiroakr/jsonl-editor/issues/1))
+
 ## [0.5.0] - 2025-01-XX
 
 ### Added
