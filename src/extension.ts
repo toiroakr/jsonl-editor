@@ -806,13 +806,40 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  // Register DocumentLink provider
+  // Register DocumentLink provider unless disabled in settings.
+  // The provider underlines every JSON line in the editor, which some users
+  // find distracting (see https://github.com/toiroakr/jsonl-editor/issues/1).
   const documentLinkProvider = new JsonlDocumentLinkProvider();
-  const documentLinkProviderDisposable =
-    vscode.languages.registerDocumentLinkProvider(
-      { language: "jsonl", scheme: "file" },
-      documentLinkProvider
-    );
+  let documentLinkProviderDisposable: vscode.Disposable | undefined;
+  const updateDocumentLinkProvider = () => {
+    const disabled = vscode.workspace
+      .getConfiguration("jsonl-editor")
+      .get<boolean>("disableEditLink", false);
+
+    if (!disabled && !documentLinkProviderDisposable) {
+      documentLinkProviderDisposable =
+        vscode.languages.registerDocumentLinkProvider(
+          { language: "jsonl", scheme: "file" },
+          documentLinkProvider
+        );
+      context.subscriptions.push(documentLinkProviderDisposable);
+    } else if (disabled && documentLinkProviderDisposable) {
+      const idx = context.subscriptions.indexOf(documentLinkProviderDisposable);
+      if (idx !== -1) {
+        context.subscriptions.splice(idx, 1);
+      }
+      documentLinkProviderDisposable.dispose();
+      documentLinkProviderDisposable = undefined;
+    }
+  };
+  updateDocumentLinkProvider();
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration((e) => {
+      if (e.affectsConfiguration("jsonl-editor.disableEditLink")) {
+        updateDocumentLinkProvider();
+      }
+    })
+  );
 
   // Register Code Action provider
   const codeActionProvider = new JsonlCodeActionProvider();
@@ -836,7 +863,6 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(editJsonlLineAtCommand);
   context.subscriptions.push(previewJsonlCommand);
   context.subscriptions.push(previewJsonlLineCommand);
-  context.subscriptions.push(documentLinkProviderDisposable);
   context.subscriptions.push(codeActionProviderDisposable);
   context.subscriptions.push(codeLensProviderDisposable);
 }
