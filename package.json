@@ -85,7 +85,7 @@
     "eslint": "10.2.1",
     "npm-run-all2": "5.0.0",
     "typescript": "5.9.3",
-    "undici-types": "7.25.0"
+    "undici-types": "8.1.0"
   },
   "repository": {
     "type": "git",
