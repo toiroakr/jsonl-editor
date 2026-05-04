@@ -71,9 +71,14 @@ function processTemplate(template) {
     html = html.replace(regex, SAMPLE_DATA[key]);
   });
 
-  // Inject mock VS Code API before other scripts
+  // Inject mock VS Code API before other scripts.
+  // Re-attach the dev nonce so the CSP does not block these injected scripts.
   const mockAPI = createMockVSCodeAPI(SAMPLE_DATA.TOTAL_LINES);
-  html = html.replace('<script>', `<script>${mockAPI}</script>\n  <script>`);
+  const nonceAttr = `nonce="${SAMPLE_DATA.NONCE}"`;
+  html = html.replace(
+    `<script ${nonceAttr}>`,
+    `<script ${nonceAttr}>${mockAPI}</script>\n  <script ${nonceAttr}>`
+  );
 
 
   // Inject VS Code theme variables after <head>
@@ -90,9 +95,9 @@ function processTemplate(template) {
   // Add theme switcher after opening body tag
   html = html.replace('<body>', `<body>\n${themeSwitcherHtml}`);
 
-  // Add theme switcher and auto-reload scripts
+  // Add theme switcher and auto-reload scripts (nonce required by template CSP)
   const combinedScripts = /* html */ `
-    <script>
+    <script ${nonceAttr}>
       // Theme switcher
       function setTheme(theme) {
         if (theme === 'light') {

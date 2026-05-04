@@ -7,7 +7,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [Unreleased]
 
 ### Changed
-- Bundle Prism.js syntax highlighter locally instead of loading from a CDN, so the preview works in offline environments. The webview now loads scripts from the extension's `media/prism/` directory under a strict Content Security Policy with a per-render nonce.
+- Bundle Prism.js syntax highlighter locally instead of loading from a CDN, so the preview works in offline environments. The webview now loads scripts from the extension's `dist/prism/` directory under a strict Content Security Policy with a per-render nonce.
 
 ## [0.5.1] - 2026-04-28
 

@@ -71,6 +71,7 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vscode-test",
+    "prepreview-dev": "node esbuild.js",
     "preview-dev": "node src/preview-dev-server.js"
   },
   "devDependencies": {

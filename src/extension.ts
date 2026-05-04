@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
@@ -152,13 +153,8 @@ class TempFileManager {
 }
 
 function getNonce(): string {
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  for (let i = 0; i < 32; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
+  // CSP nonces must be unpredictable; use a CSPRNG instead of Math.random().
+  return crypto.randomBytes(24).toString("base64");
 }
 
 function getJsonlLineTarget(editor: vscode.TextEditor): EditTarget | null {
