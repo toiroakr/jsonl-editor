@@ -21,9 +21,9 @@ const SAMPLE_DATA = {
   ORIGINAL_CONTENT: JSON.stringify(SAMPLE_CONTENT),
   NONCE: 'dev-nonce',
   CSP_SOURCE: "'self'",
-  PRISM_URI: '/media/prism/prism.js',
-  PRISM_JSON_URI: '/media/prism/prism-json.min.js',
-  PRISM_JSON5_URI: '/media/prism/prism-json5.min.js',
+  PRISM_URI: '/dist/prism/prism.js',
+  PRISM_JSON_URI: '/dist/prism/prism-json.min.js',
+  PRISM_JSON5_URI: '/dist/prism/prism-json5.min.js',
 };
 
 module.exports = SAMPLE_DATA;

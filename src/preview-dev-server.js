@@ -6,7 +6,7 @@ const PORT = 3000;
 const TEMPLATE_PATH = path.join(__dirname, 'preview-template.html');
 const SAMPLE_DATA_PATH = path.join(__dirname, 'sample-data.js');
 const VSCODE_THEME_PATH = path.join(__dirname, 'vscode-theme.js');
-const MEDIA_DIR = path.join(__dirname, '..', 'media');
+const DIST_DIR = path.join(__dirname, '..', 'dist');
 
 // Helper function to load modules without cache
 function requireUncached(module) {
@@ -156,10 +156,10 @@ const server = http.createServer((req, res) => {
       res.writeHead(200, { 'Content-Type': 'text/html' });
       res.end(html);
     });
-  } else if (req.url.startsWith('/media/')) {
-    const relPath = req.url.replace(/^\/media\//, '').split('?')[0];
-    const filePath = path.normalize(path.join(MEDIA_DIR, relPath));
-    if (!filePath.startsWith(MEDIA_DIR)) {
+  } else if (req.url.startsWith('/dist/')) {
+    const relPath = req.url.replace(/^\/dist\//, '').split('?')[0];
+    const filePath = path.normalize(path.join(DIST_DIR, relPath));
+    if (!filePath.startsWith(DIST_DIR)) {
       res.writeHead(403);
       res.end('Forbidden');
       return;

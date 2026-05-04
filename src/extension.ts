@@ -225,7 +225,7 @@ class JsonlPreviewPanel {
       {
         enableScripts: true,
         retainContextWhenHidden: true,
-        localResourceRoots: [vscode.Uri.joinPath(extensionUri, "media")],
+        localResourceRoots: [vscode.Uri.joinPath(extensionUri, "dist", "prism")],
       }
     );
 
@@ -490,7 +490,7 @@ class JsonlPreviewPanel {
     }
 
     // Resolve local Prism asset URIs for offline use
-    const prismDir = vscode.Uri.joinPath(this._extensionUri, "media", "prism");
+    const prismDir = vscode.Uri.joinPath(this._extensionUri, "dist", "prism");
     const prismUri = webview.asWebviewUri(
       vscode.Uri.joinPath(prismDir, "prism.js")
     );

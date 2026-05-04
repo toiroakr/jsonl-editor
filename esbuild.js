@@ -45,12 +45,12 @@ const copyHtmlPlugin = {
 };
 
 /**
- * Copy bundled Prism.js assets from node_modules into media/prism/ so the
+ * Copy bundled Prism.js assets from node_modules into dist/prism/ so the
  * preview webview can load them locally (offline) via webview.asWebviewUri.
  *
  * @type {import('esbuild').Plugin}
  */
-const prismDestDir = path.join(__dirname, 'media', 'prism');
+const prismDestDir = path.join(__dirname, 'dist', 'prism');
 const prismAssets = [
 	{ src: path.join(__dirname, 'node_modules', 'prismjs', 'prism.js'), name: 'prism.js' },
 	{ src: path.join(__dirname, 'node_modules', 'prismjs', 'components', 'prism-json.min.js'), name: 'prism-json.min.js' },

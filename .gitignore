@@ -1,6 +1,5 @@
 out
 dist
-media/prism
 node_modules
 .vscode-test/
 *.vsix
