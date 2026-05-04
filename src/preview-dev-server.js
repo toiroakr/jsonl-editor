@@ -40,8 +40,8 @@ function createMockVSCodeAPI(totalLines) {
     };
 
     function updateNavigationButtons(line) {
-      const prevButton = document.querySelector('button[onclick="navigate(\\'prev\\')"]');
-      const nextButton = document.querySelector('button[onclick="navigate(\\'next\\')"]');
+      const prevButton = document.getElementById('prevBtn');
+      const nextButton = document.getElementById('nextBtn');
 
       if (line <= 1) {
         prevButton.setAttribute('disabled', 'disabled');
@@ -82,8 +82,8 @@ function processTemplate(template) {
   // Add theme switcher HTML
   const themeSwitcherHtml = `
     <div class="theme-switcher">
-      <button id="darkTheme" class="active" onclick="setTheme('dark')">Dark</button>
-      <button id="lightTheme" onclick="setTheme('light')">Light</button>
+      <button id="darkTheme" class="active">Dark</button>
+      <button id="lightTheme">Light</button>
     </div>
   `;
 
@@ -107,6 +107,9 @@ function processTemplate(template) {
         // Save theme preference
         localStorage.setItem('vscode-theme', theme);
       }
+
+      document.getElementById('darkTheme').addEventListener('click', () => setTheme('dark'));
+      document.getElementById('lightTheme').addEventListener('click', () => setTheme('light'));
 
       // Load saved theme preference
       const savedTheme = localStorage.getItem('vscode-theme') || 'dark';

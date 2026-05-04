@@ -131,15 +131,15 @@
 </head>
 <body>
   <div class="navigation">
-    <button onclick="navigate('prev')" {{PREV_DISABLED}}>&lt;&nbsp;&nbsp;Prev</button>
-    <input type="number" id="lineInput" value="{{LINE_NUMBER}}" min="1" max="{{TOTAL_LINES}}" onchange="goToLine(this.value)">
+    <button id="prevBtn" {{PREV_DISABLED}}>&lt;&nbsp;&nbsp;Prev</button>
+    <input type="number" id="lineInput" value="{{LINE_NUMBER}}" min="1" max="{{TOTAL_LINES}}">
     <span class="line-counter">/ {{TOTAL_LINES}}</span>
-    <button onclick="navigate('next')" {{NEXT_DISABLED}}>Next&nbsp;&nbsp;&gt;</button>
-    <button onclick="editCurrentLine()">Edit</button>
+    <button id="nextBtn" {{NEXT_DISABLED}}>Next&nbsp;&nbsp;&gt;</button>
+    <button id="editBtn">Edit</button>
   </div>
   <div class="json-container">
     {{CONTENT}}
-    <button class="copy-button" onclick="copyJson()">Copy JSON</button>
+    <button id="copyBtn" class="copy-button">Copy JSON</button>
     <pre class="original-json" hidden>{{ORIGINAL_CONTENT}}</pre>
   </div>
   <script nonce="{{NONCE}}">
@@ -170,8 +170,17 @@
       }
     }
 
-    // Handle Enter key in input
-    document.getElementById('lineInput').addEventListener('keypress', function(e) {
+    // Wire up event listeners (CSP nonce policy disallows inline handlers)
+    document.getElementById('prevBtn').addEventListener('click', () => navigate('prev'));
+    document.getElementById('nextBtn').addEventListener('click', () => navigate('next'));
+    document.getElementById('editBtn').addEventListener('click', editCurrentLine);
+    document.getElementById('copyBtn').addEventListener('click', copyJson);
+
+    const lineInput = document.getElementById('lineInput');
+    lineInput.addEventListener('change', function() {
+      goToLine(this.value);
+    });
+    lineInput.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         goToLine(this.value);
       }
