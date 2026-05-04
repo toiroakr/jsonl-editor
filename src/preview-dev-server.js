@@ -6,6 +6,7 @@ const PORT = 3000;
 const TEMPLATE_PATH = path.join(__dirname, 'preview-template.html');
 const SAMPLE_DATA_PATH = path.join(__dirname, 'sample-data.js');
 const VSCODE_THEME_PATH = path.join(__dirname, 'vscode-theme.js');
+const MEDIA_DIR = path.join(__dirname, '..', 'media');
 
 // Helper function to load modules without cache
 function requireUncached(module) {
@@ -154,6 +155,23 @@ const server = http.createServer((req, res) => {
       const html = processTemplate(data);
       res.writeHead(200, { 'Content-Type': 'text/html' });
       res.end(html);
+    });
+  } else if (req.url.startsWith('/media/')) {
+    const relPath = req.url.replace(/^\/media\//, '').split('?')[0];
+    const filePath = path.normalize(path.join(MEDIA_DIR, relPath));
+    if (!filePath.startsWith(MEDIA_DIR)) {
+      res.writeHead(403);
+      res.end('Forbidden');
+      return;
+    }
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        res.writeHead(404);
+        res.end('Not found');
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'application/javascript' });
+      res.end(data);
     });
   } else if (req.url === '/check-modified') {
     // Check modification times for all watched files
