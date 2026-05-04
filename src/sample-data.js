@@ -19,6 +19,11 @@ const SAMPLE_DATA = {
   NEXT_DISABLED: '',
   CONTENT: /* jsx */ `<pre><code class="language-json">${JSON.stringify(SAMPLE_CONTENT, null, 2)}</code></pre>`,
   ORIGINAL_CONTENT: JSON.stringify(SAMPLE_CONTENT),
+  NONCE: 'dev-nonce',
+  CSP_SOURCE: "'self'",
+  PRISM_URI: '/media/prism/prism.js',
+  PRISM_JSON_URI: '/media/prism/prism-json.min.js',
+  PRISM_JSON5_URI: '/media/prism/prism-json5.min.js',
 };
 
 module.exports = SAMPLE_DATA;

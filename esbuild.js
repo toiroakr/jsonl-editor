@@ -44,6 +44,33 @@ const copyHtmlPlugin = {
 	},
 };
 
+/**
+ * Copy bundled Prism.js assets from node_modules into media/prism/ so the
+ * preview webview can load them locally (offline) via webview.asWebviewUri.
+ *
+ * @type {import('esbuild').Plugin}
+ */
+const prismDestDir = path.join(__dirname, 'media', 'prism');
+const prismAssets = [
+	{ src: path.join(__dirname, 'node_modules', 'prismjs', 'prism.js'), name: 'prism.js' },
+	{ src: path.join(__dirname, 'node_modules', 'prismjs', 'components', 'prism-json.min.js'), name: 'prism-json.min.js' },
+	{ src: path.join(__dirname, 'node_modules', 'prismjs', 'components', 'prism-json5.min.js'), name: 'prism-json5.min.js' },
+];
+const copyPrismPlugin = {
+	name: 'copy-prism',
+	setup(build) {
+		build.onStart(() => {
+			fs.mkdirSync(prismDestDir, { recursive: true });
+			for (const asset of prismAssets) {
+				if (!fs.existsSync(asset.src)) {
+					throw new Error(`Prism asset not found: ${asset.src}. Did you run \`pnpm install\`?`);
+				}
+				fs.copyFileSync(asset.src, path.join(prismDestDir, asset.name));
+			}
+		});
+	},
+};
+
 async function main() {
 	const ctx = await esbuild.context({
 		entryPoints: [
@@ -59,6 +86,7 @@ async function main() {
 		external: ['vscode'],
 		logLevel: 'silent',
 		plugins: [
+			copyPrismPlugin,
 			copyHtmlPlugin,
 			/* add to the end of plugins array */
 			esbuildProblemMatcherPlugin,

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src {{CSP_SOURCE}} 'nonce-{{NONCE}}';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JSONL Preview</title>
   <style>
@@ -124,9 +125,9 @@
       background-color: var(--vscode-testing-iconPassed);
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json5.min.js"></script>
+  <script nonce="{{NONCE}}" src="{{PRISM_URI}}"></script>
+  <script nonce="{{NONCE}}" src="{{PRISM_JSON_URI}}"></script>
+  <script nonce="{{NONCE}}" src="{{PRISM_JSON5_URI}}"></script>
 </head>
 <body>
   <div class="navigation">
@@ -141,7 +142,7 @@
     <button class="copy-button" onclick="copyJson()">Copy JSON</button>
     <pre class="original-json" hidden>{{ORIGINAL_CONTENT}}</pre>
   </div>
-  <script>
+  <script nonce="{{NONCE}}">
     // Replace placeholders with actual values
     let originalJsonData = null;
 

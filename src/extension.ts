@@ -151,6 +151,16 @@ class TempFileManager {
   }
 }
 
+function getNonce(): string {
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  for (let i = 0; i < 32; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
 function getJsonlLineTarget(editor: vscode.TextEditor): EditTarget | null {
   const document = editor.document;
   const selection = editor.selection;
@@ -181,6 +191,7 @@ function getJsonlLineTarget(editor: vscode.TextEditor): EditTarget | null {
 class JsonlPreviewPanel {
   private static currentPanel: JsonlPreviewPanel | undefined;
   private readonly _panel: vscode.WebviewPanel;
+  private readonly _extensionUri: vscode.Uri;
   private _disposables: vscode.Disposable[] = [];
   private _currentEditor: vscode.TextEditor | undefined;
   private _currentLine: number = 0;
@@ -214,6 +225,7 @@ class JsonlPreviewPanel {
       {
         enableScripts: true,
         retainContextWhenHidden: true,
+        localResourceRoots: [vscode.Uri.joinPath(extensionUri, "media")],
       }
     );
 
@@ -231,6 +243,7 @@ class JsonlPreviewPanel {
     editor?: vscode.TextEditor
   ) {
     this._panel = panel;
+    this._extensionUri = extensionUri;
 
     // Load HTML template
     const templatePath = path.join(__dirname, "preview-template.html");
@@ -404,7 +417,7 @@ class JsonlPreviewPanel {
     this._panel.webview.html = this._getHtmlForWebview(webview);
   }
 
-  private _getHtmlForWebview(_webview: vscode.Webview) {
+  private _getHtmlForWebview(webview: vscode.Webview) {
     let jsonContent = "";
     let lineNumber = 0;
     let totalLines = 0;
@@ -476,6 +489,19 @@ class JsonlPreviewPanel {
       )}</code></pre>`;
     }
 
+    // Resolve local Prism asset URIs for offline use
+    const prismDir = vscode.Uri.joinPath(this._extensionUri, "media", "prism");
+    const prismUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(prismDir, "prism.js")
+    );
+    const prismJsonUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(prismDir, "prism-json.min.js")
+    );
+    const prismJson5Uri = webview.asWebviewUri(
+      vscode.Uri.joinPath(prismDir, "prism-json5.min.js")
+    );
+    const nonce = getNonce();
+
     // Replace placeholders in template
     let html = this._htmlTemplate;
     html = html.replace(/{{LINE_NUMBER}}/g, lineNumber.toString());
@@ -487,6 +513,11 @@ class JsonlPreviewPanel {
     );
     html = html.replace("{{CONTENT}}", content);
     html = html.replace("{{ORIGINAL_CONTENT}}", lineText);
+    html = html.replace(/{{NONCE}}/g, nonce);
+    html = html.replace(/{{CSP_SOURCE}}/g, webview.cspSource);
+    html = html.replace("{{PRISM_URI}}", prismUri.toString());
+    html = html.replace("{{PRISM_JSON_URI}}", prismJsonUri.toString());
+    html = html.replace("{{PRISM_JSON5_URI}}", prismJson5Uri.toString());
 
     return html;
   }

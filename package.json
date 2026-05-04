@@ -84,6 +84,7 @@
     "esbuild": "0.28.0",
     "eslint": "10.2.1",
     "npm-run-all2": "5.0.2",
+    "prismjs": "1.29.0",
     "typescript": "5.9.3",
     "undici-types": "7.25.0"
   },
