@@ -498,7 +498,11 @@ class JsonlPreviewPanel {
     );
     const nonce = getNonce();
 
-    // Replace placeholders in template
+    // Replace placeholders in template. Inject trusted/static placeholders
+    // (NONCE, CSP_SOURCE, asset URIs, counters) first so that any
+    // user-controlled text in CONTENT/ORIGINAL_CONTENT cannot smuggle in a
+    // {{NONCE}} marker that gets resolved to the real nonce. ORIGINAL_CONTENT
+    // is also HTML-escaped because the dialog reads it back via .textContent.
     let html = this._htmlTemplate;
     html = html.replace(/{{LINE_NUMBER}}/g, lineNumber.toString());
     html = html.replace(/{{TOTAL_LINES}}/g, totalLines.toString());
@@ -507,13 +511,15 @@ class JsonlPreviewPanel {
       "{{NEXT_DISABLED}}",
       lineNumber >= totalLines ? "disabled" : ""
     );
-    html = html.replace("{{CONTENT}}", content);
-    html = html.replace("{{ORIGINAL_CONTENT}}", lineText);
     html = html.replace(/{{NONCE}}/g, nonce);
     html = html.replace(/{{CSP_SOURCE}}/g, webview.cspSource);
     html = html.replace("{{PRISM_URI}}", prismUri.toString());
     html = html.replace("{{PRISM_JSON_URI}}", prismJsonUri.toString());
     html = html.replace("{{PRISM_JSON5_URI}}", prismJson5Uri.toString());
+    // Use function replacements so $-sequences inside user content (e.g. "$1",
+    // "$&") are not interpreted as String.prototype.replace specials.
+    html = html.replace("{{CONTENT}}", () => content);
+    html = html.replace("{{ORIGINAL_CONTENT}}", () => this._escapeHtml(lineText));
 
     return html;
   }

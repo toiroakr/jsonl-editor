@@ -167,7 +167,10 @@ const server = http.createServer((req, res) => {
   } else if (req.url.startsWith('/dist/')) {
     const relPath = req.url.replace(/^\/dist\//, '').split('?')[0];
     const filePath = path.normalize(path.join(DIST_DIR, relPath));
-    if (!filePath.startsWith(DIST_DIR)) {
+    // path.relative correctly rejects sibling directories whose names share
+    // the DIST_DIR prefix (e.g. dist-backup/), unlike a naive startsWith check.
+    const rel = path.relative(DIST_DIR, filePath);
+    if (rel.startsWith('..') || path.isAbsolute(rel)) {
       res.writeHead(403);
       res.end('Forbidden');
       return;
