@@ -44,12 +44,12 @@
       "editor/context": [
         {
           "command": "jsonl-editor.editJsonlLine",
-          "when": "resourceExtname == .jsonl",
+          "when": "resourceLangId == jsonl",
           "group": "navigation"
         },
         {
           "command": "jsonl-editor.previewJsonl",
-          "when": "resourceExtname == .jsonl",
+          "when": "resourceLangId == jsonl",
           "group": "navigation"
         }
       ]

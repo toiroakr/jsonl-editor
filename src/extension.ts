@@ -255,7 +255,7 @@ class JsonlPreviewPanel {
       this._currentLine = editor.selection.start.line;
     } else if (
       vscode.window.activeTextEditor &&
-      vscode.window.activeTextEditor.document.uri.path.endsWith(".jsonl")
+      vscode.window.activeTextEditor.document.languageId === "jsonl"
     ) {
       this._currentEditor = vscode.window.activeTextEditor;
       this._currentLine = this._currentEditor.selection.start.line;
@@ -282,7 +282,7 @@ class JsonlPreviewPanel {
     vscode.window.onDidChangeTextEditorSelection(
       (e) => {
         if (
-          e.textEditor.document.uri.path.endsWith(".jsonl") &&
+          e.textEditor.document.languageId === "jsonl" &&
           !this._isManualNavigation
         ) {
           this._currentEditor = e.textEditor;
@@ -297,7 +297,7 @@ class JsonlPreviewPanel {
     // Handle active editor changes
     vscode.window.onDidChangeActiveTextEditor(
       (editor) => {
-        if (editor && editor.document.uri.path.endsWith(".jsonl")) {
+        if (editor && editor.document.languageId === "jsonl") {
           this._currentEditor = editor;
           this._update();
         }
@@ -518,8 +518,8 @@ class JsonlPreviewPanel {
     html = html.replace("{{PRISM_JSON5_URI}}", prismJson5Uri.toString());
     // Use function replacements so $-sequences inside user content (e.g. "$1",
     // "$&") are not interpreted as String.prototype.replace specials.
-    html = html.replace("{{CONTENT}}", () => content);
     html = html.replace("{{ORIGINAL_CONTENT}}", () => this._escapeHtml(lineText));
+    html = html.replace("{{CONTENT}}", () => content);
 
     return html;
   }
@@ -541,7 +541,7 @@ class JsonlDocumentLinkProvider implements vscode.DocumentLinkProvider {
   public provideDocumentLinks(
     document: vscode.TextDocument
   ): vscode.DocumentLink[] | undefined {
-    if (!document.uri.path.endsWith(".jsonl")) {
+    if (document.languageId !== "jsonl") {
       return undefined;
     }
 
@@ -588,7 +588,7 @@ class JsonlCodeActionProvider implements vscode.CodeActionProvider {
     document: vscode.TextDocument,
     range: vscode.Range | vscode.Selection
   ): vscode.CodeAction[] | undefined {
-    if (!document.uri.path.endsWith(".jsonl")) {
+    if (document.languageId !== "jsonl") {
       return undefined;
     }
 
@@ -649,7 +649,7 @@ class JsonlCodeLensProvider implements vscode.CodeLensProvider {
   public provideCodeLenses(
     document: vscode.TextDocument
   ): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-    if (!document.uri.path.endsWith(".jsonl")) {
+    if (document.languageId !== "jsonl") {
       return [];
     }
 
@@ -806,7 +806,7 @@ export function activate(context: vscode.ExtensionContext) {
     "jsonl-editor.previewJsonl",
     () => {
       const editor = vscode.window.activeTextEditor;
-      if (!editor || !editor.document.uri.path.endsWith(".jsonl")) {
+      if (!editor || editor.document.languageId !== "jsonl") {
         vscode.window.showErrorMessage("Please open a JSONL file first");
         return;
       }
