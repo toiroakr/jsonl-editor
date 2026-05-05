@@ -25,8 +25,9 @@
     "languages": [
       {
         "id": "jsonl",
-        "aliases": ["JSON Lines", "jsonl"],
-        "extensions": [".jsonl", ".ndjson", ".jsonlines"]
+        "aliases": ["JSON Lines", "JSONL"],
+        "extensions": [".jsonl", ".ndjson", ".jsonlines"],
+        "configuration": "./language-configuration.json"
       }
     ],
     "commands": [
