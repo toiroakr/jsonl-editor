@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-05-05
+
 ### Fixed
 - Register `.jsonl` (and `.ndjson` / `.jsonlines`) as the `jsonl` language so the extension actually activates when a JSONL file is opened. Without this contribution, VS Code treated such files as plain text, so `onLanguage:jsonl` never fired and the Code Lens, document link, and preview commands were unreachable.
 - Recognize JSONL documents by `languageId` instead of by `.jsonl` filename, so `.ndjson` and `.jsonlines` files get the full edit/preview/Code Lens/document link experience (previously only the `.jsonl` extension did, even though all three were registered as the same language).
@@ -14,6 +16,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Changed
 - Bundle Prism.js syntax highlighter locally instead of loading from a CDN, so the preview works in offline environments. The webview now loads scripts from the extension's `dist/prism/` directory under a strict Content Security Policy with a per-render nonce.
+
+### Added
+- Activation test suite (`pnpm test`) covering extension activation, command registration, `languageId` resolution for `.jsonl` / `.ndjson` / `.jsonlines`, Code Lens, and Document Link providers.
 
 ## [0.5.1] - 2026-04-28
 
