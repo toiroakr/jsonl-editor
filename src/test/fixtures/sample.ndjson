@@ -1,0 +1,2 @@
+{"event":"login","user":"alice"}
+{"event":"logout","user":"alice"}

@@ -3,7 +3,7 @@
   "displayName": "JSONL Edit/Preview",
   "description": "Edit individual JSON lines in JSONL files",
   "publisher": "toiroakr",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "icon": "assets/icon.png",
   "categories": [
     "Other"
@@ -22,6 +22,14 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "jsonl",
+        "aliases": ["JSON Lines", "JSONL"],
+        "extensions": [".jsonl", ".ndjson", ".jsonlines"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
     "commands": [
       {
         "command": "jsonl-editor.editJsonlLine",
@@ -36,12 +44,12 @@
       "editor/context": [
         {
           "command": "jsonl-editor.editJsonlLine",
-          "when": "resourceExtname == .jsonl",
+          "when": "resourceLangId == jsonl",
           "group": "navigation"
         },
         {
           "command": "jsonl-editor.previewJsonl",
-          "when": "resourceExtname == .jsonl",
+          "when": "resourceLangId == jsonl",
           "group": "navigation"
         }
       ]
@@ -71,6 +79,7 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vscode-test",
+    "prepreview-dev": "node esbuild.js",
     "preview-dev": "node src/preview-dev-server.js"
   },
   "devDependencies": {
@@ -84,6 +93,7 @@
     "esbuild": "0.28.0",
     "eslint": "10.2.1",
     "npm-run-all2": "5.0.2",
+    "prismjs": "1.29.0",
     "typescript": "5.9.3",
     "undici-types": "7.25.0"
   },

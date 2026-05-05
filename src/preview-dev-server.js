@@ -6,6 +6,7 @@ const PORT = 3000;
 const TEMPLATE_PATH = path.join(__dirname, 'preview-template.html');
 const SAMPLE_DATA_PATH = path.join(__dirname, 'sample-data.js');
 const VSCODE_THEME_PATH = path.join(__dirname, 'vscode-theme.js');
+const DIST_DIR = path.join(__dirname, '..', 'dist');
 
 // Helper function to load modules without cache
 function requireUncached(module) {
@@ -39,8 +40,8 @@ function createMockVSCodeAPI(totalLines) {
     };
 
     function updateNavigationButtons(line) {
-      const prevButton = document.querySelector('button[onclick="navigate(\\'prev\\')"]');
-      const nextButton = document.querySelector('button[onclick="navigate(\\'next\\')"]');
+      const prevButton = document.getElementById('prevBtn');
+      const nextButton = document.getElementById('nextBtn');
 
       if (line <= 1) {
         prevButton.setAttribute('disabled', 'disabled');
@@ -70,9 +71,14 @@ function processTemplate(template) {
     html = html.replace(regex, SAMPLE_DATA[key]);
   });
 
-  // Inject mock VS Code API before other scripts
+  // Inject mock VS Code API before other scripts.
+  // Re-attach the dev nonce so the CSP does not block these injected scripts.
   const mockAPI = createMockVSCodeAPI(SAMPLE_DATA.TOTAL_LINES);
-  html = html.replace('<script>', `<script>${mockAPI}</script>\n  <script>`);
+  const nonceAttr = `nonce="${SAMPLE_DATA.NONCE}"`;
+  html = html.replace(
+    `<script ${nonceAttr}>`,
+    `<script ${nonceAttr}>${mockAPI}</script>\n  <script ${nonceAttr}>`
+  );
 
 
   // Inject VS Code theme variables after <head>
@@ -81,17 +87,17 @@ function processTemplate(template) {
   // Add theme switcher HTML
   const themeSwitcherHtml = `
     <div class="theme-switcher">
-      <button id="darkTheme" class="active" onclick="setTheme('dark')">Dark</button>
-      <button id="lightTheme" onclick="setTheme('light')">Light</button>
+      <button id="darkTheme" class="active">Dark</button>
+      <button id="lightTheme">Light</button>
     </div>
   `;
 
   // Add theme switcher after opening body tag
   html = html.replace('<body>', `<body>\n${themeSwitcherHtml}`);
 
-  // Add theme switcher and auto-reload scripts
+  // Add theme switcher and auto-reload scripts (nonce required by template CSP)
   const combinedScripts = /* html */ `
-    <script>
+    <script ${nonceAttr}>
       // Theme switcher
       function setTheme(theme) {
         if (theme === 'light') {
@@ -106,6 +112,9 @@ function processTemplate(template) {
         // Save theme preference
         localStorage.setItem('vscode-theme', theme);
       }
+
+      document.getElementById('darkTheme').addEventListener('click', () => setTheme('dark'));
+      document.getElementById('lightTheme').addEventListener('click', () => setTheme('light'));
 
       // Load saved theme preference
       const savedTheme = localStorage.getItem('vscode-theme') || 'dark';
@@ -154,6 +163,26 @@ const server = http.createServer((req, res) => {
       const html = processTemplate(data);
       res.writeHead(200, { 'Content-Type': 'text/html' });
       res.end(html);
+    });
+  } else if (req.url.startsWith('/dist/')) {
+    const relPath = req.url.replace(/^\/dist\//, '').split('?')[0];
+    const filePath = path.normalize(path.join(DIST_DIR, relPath));
+    // path.relative correctly rejects sibling directories whose names share
+    // the DIST_DIR prefix (e.g. dist-backup/), unlike a naive startsWith check.
+    const rel = path.relative(DIST_DIR, filePath);
+    if (rel.startsWith('..') || path.isAbsolute(rel)) {
+      res.writeHead(403);
+      res.end('Forbidden');
+      return;
+    }
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        res.writeHead(404);
+        res.end('Not found');
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'application/javascript' });
+      res.end(data);
     });
   } else if (req.url === '/check-modified') {
     // Check modification times for all watched files
