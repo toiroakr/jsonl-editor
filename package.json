@@ -94,7 +94,7 @@
     "eslint": "10.3.0",
     "npm-run-all2": "5.0.2",
     "prismjs": "1.30.0",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "undici-types": "7.25.0"
   },
   "repository": {
