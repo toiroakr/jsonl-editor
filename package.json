@@ -83,19 +83,19 @@
     "preview-dev": "node src/preview-dev-server.js"
   },
   "devDependencies": {
-    "@types/mocha": "10.0.10",
-    "@types/node": "24.13.3",
-    "@types/vscode": "1.125.0",
-    "@typescript-eslint/eslint-plugin": "8.65.0",
-    "@typescript-eslint/parser": "8.65.0",
-    "@vscode/test-cli": "0.0.15",
-    "@vscode/test-electron": "2.5.2",
-    "esbuild": "0.28.1",
-    "eslint": "10.8.0",
-    "npm-run-all2": "9.0.3",
-    "prismjs": "1.30.0",
-    "typescript": "6.0.3",
-    "undici-types": "8.9.0"
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.13.3",
+    "@types/vscode": "^1.125.0",
+    "@typescript-eslint/eslint-plugin": "^8.65.0",
+    "@typescript-eslint/parser": "^8.65.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.28.1",
+    "eslint": "^10.8.0",
+    "npm-run-all2": "^9.0.3",
+    "prismjs": "^1.30.0",
+    "typescript": "^6.0.3",
+    "undici-types": "^8.9.0"
   },
   "repository": {
     "type": "git",
