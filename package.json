@@ -14,7 +14,7 @@
     "JSON Lines"
   ],
   "engines": {
-    "vscode": "^1.132.0"
+    "vscode": "^1.132.1"
   },
   "license": "MIT",
   "activationEvents": [
