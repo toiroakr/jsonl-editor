@@ -91,11 +91,11 @@
     "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.28.2",
-    "eslint": "^10.9.1",
+    "eslint": "^10.10.0",
     "npm-run-all2": "^9.0.3",
     "prismjs": "^1.30.0",
     "typescript": "^6.0.3",
-    "undici-types": "^8.10.1"
+    "undici-types": "^8.10.2"
   },
   "repository": {
     "type": "git",
