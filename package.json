@@ -86,8 +86,8 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.19.2",
     "@types/vscode": "^1.140.0",
-    "@typescript-eslint/eslint-plugin": "^8.71.2",
-    "@typescript-eslint/parser": "^8.71.2",
+    "@typescript-eslint/eslint-plugin": "^8.72.0",
+    "@typescript-eslint/parser": "^8.72.0",
     "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.28.2",
@@ -95,7 +95,7 @@
     "npm-run-all2": "^9.0.3",
     "prismjs": "^1.30.0",
     "typescript": "^6.0.3",
-    "undici-types": "^8.12.2"
+    "undici-types": "^8.12.3"
   },
   "repository": {
     "type": "git",
