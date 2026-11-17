@@ -25,8 +25,15 @@
     "languages": [
       {
         "id": "jsonl",
-        "aliases": ["JSON Lines", "JSONL"],
-        "extensions": [".jsonl", ".ndjson", ".jsonlines"],
+        "aliases": [
+          "JSON Lines",
+          "JSONL"
+        ],
+        "extensions": [
+          ".jsonl",
+          ".ndjson",
+          ".jsonlines"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -89,7 +96,7 @@
     "@typescript-eslint/eslint-plugin": "^8.72.2",
     "@typescript-eslint/parser": "^8.72.2",
     "@vscode/test-cli": "^0.0.15",
-    "@vscode/test-electron": "^2.5.2",
+    "@vscode/test-electron": "3.1.0",
     "esbuild": "^0.28.2",
     "eslint": "^10.14.0",
     "npm-run-all2": "^9.0.4",
