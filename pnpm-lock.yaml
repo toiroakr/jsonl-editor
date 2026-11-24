@@ -7,162 +7,162 @@ importers:
     configDependencies: {}
     packageManagerDependencies:
       pnpm:
-        specifier: 12.19.0
-        version: 12.19.0
+        specifier: 12.21.0
+        version: 12.21.0
 
 packages:
 
-  '@pnpm/exe.android-arm64@12.19.0':
-    resolution: {integrity: sha512-NpPhCmjTAQUmG6PK5CYQBWrPE8D/IQCOcmVQQ1MMfVjcBIWh8KAxk1jBsKjy9Dpz7JH9k3QAQdwCekpi/9Q3LQ==}
+  '@pnpm/exe.android-arm64@12.21.0':
+    resolution: {integrity: sha512-iaWidxR5B9NUBpwMznCQu1yUpKB6BjTY5BYX2lORj76VsfINdj8Z8XWSzSNrGI8qlxa28Jzdp5fiaspzOaJZlA==}
     cpu: [arm64]
     os: [android]
 
-  '@pnpm/exe.android-x64@12.19.0':
-    resolution: {integrity: sha512-Ko6d6NHauv1fV9WjuEoFTM/V4Q6wVuv+A59atp37YB4UMYs9h6OHcpN7W4Q6l//do8LJhN2fjt4F7K4+/SRWSw==}
+  '@pnpm/exe.android-x64@12.21.0':
+    resolution: {integrity: sha512-35e5v3wlwjIYxDywq+R6/z8CE4gLOEgRxt18yqz1tMRLmx2mnW+CFJI2Q8+srTNjn7gykXUC0x1k195JNikC5A==}
     cpu: [x64]
     os: [android]
 
-  '@pnpm/exe.darwin-arm64@12.19.0':
-    resolution: {integrity: sha512-2u5ifdaBi/3pA0MMmEZ9ZvXBY2DJvk0NrvxgZ3L87B3MlbZdTb9oq6tTYMJAsMLhEg0NiGovtq1cTHVc75OnKw==}
+  '@pnpm/exe.darwin-arm64@12.21.0':
+    resolution: {integrity: sha512-F5OyMX/6zLSowpTZEQRojbCmPS1Pq+fyRaIinslsIe6Glh3qbyQ52u+Fe0eEzSaRuIbWZkXmAAXSWh6Q5Wrlgg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@pnpm/exe.darwin-x64@12.19.0':
-    resolution: {integrity: sha512-VZOyG983At+Y9iqOtxSfRSMDci4dLqmfYL7xFDKeLvsw8u101T1vellHFYdWnxM59gNi4jufuhBcyx5WwjeF+A==}
+  '@pnpm/exe.darwin-x64@12.21.0':
+    resolution: {integrity: sha512-EzpvcsaE6hrrgYeEiAFYd2rSgFybYyxXhkAY7K3y6Hg3loVfcyJ81hHczpFzi8lW5RXtUlFECRPZ8ZAMRFQYYg==}
     cpu: [x64]
     os: [darwin]
 
-  '@pnpm/exe.freebsd-x64@12.19.0':
-    resolution: {integrity: sha512-VctpMq4CSn8fh20XX0dsQz1cmakaRxSMq5AT7u66dQxkpMhf/ugm6bbwyj0rJpb04SYHtUBJKb7BB433KWHy8A==}
+  '@pnpm/exe.freebsd-x64@12.21.0':
+    resolution: {integrity: sha512-wNjuEnmdLks4aayPu/QZWQ5tQM9Jn+odUp/vwQM8BXRYoulkTZhtZTHoD60N6mUdLWef1hgUeUh8llNGEUsimw==}
     cpu: [x64]
     os: [freebsd]
 
-  '@pnpm/exe.linux-arm64-musl@12.19.0':
-    resolution: {integrity: sha512-qWBJJrY084dmXordzdjL8C4drTHEU6dhbJ4ZupTChg9DKbWSKhVxJwTZXzUwFNmbo/TTAIQ8pFic8YCr0fIczg==}
+  '@pnpm/exe.linux-arm64-musl@12.21.0':
+    resolution: {integrity: sha512-Ceit9zn4g5ZqCJtx1fV8eJE7p8aeXMrGZ+Dc01vRqZLIUNgNeI+Ur0ruyqxtsnJx6rGADyXzohumxPLHjaJ5AQ==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@pnpm/exe.linux-arm64@12.19.0':
-    resolution: {integrity: sha512-Rcivut7V1fcWSz4c11GYcZwRrUO1+wXWLUUBV13uRGuQ0QcixOoVn9+2ypfSmp6arDXl2Y+vKhs9522V8kCZHw==}
+  '@pnpm/exe.linux-arm64@12.21.0':
+    resolution: {integrity: sha512-4Oj/iF2TDCe2lcH0n4TupPR5sSdrNLclJB6xBElLMPCUOAvBhdf2rRlSaO5M4erJ6g4Fyy7YTXTpcmfFsKyxEA==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-ppc64@12.19.0':
-    resolution: {integrity: sha512-KhBS0NJK+wY0PbwdjFQ7gR00Pv+1be83nXqPrRcK+h0xmUmRSAEiLGyPajSNa7xUFoCXVVwJGeoCYMepz2VNmg==}
+  '@pnpm/exe.linux-ppc64@12.21.0':
+    resolution: {integrity: sha512-s2o7rdSDeUTBFsNqxptpZXlTgT6cojmMVUOvTQvFNSv6Easian02ha4tR32fwwD97Au4YzIIjMCwywCF4D82Sw==}
     cpu: [ppc64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-riscv64@12.19.0':
-    resolution: {integrity: sha512-fbwKjV+2AsrFTToCseD9IccE+VQXbzeKMiho6U1he4N904gQ9p06/MwtxqKBGSD+PaEVAn8IolzSQRpBq84XZg==}
+  '@pnpm/exe.linux-riscv64@12.21.0':
+    resolution: {integrity: sha512-EYv3GzxeBTITCuM3yGHHbpRFpUvyulkXpQ6LsjKAQNL3iaba1E6h9iDmlouLb3Io4AMMsfdk0/uG6poQ41uewA==}
     cpu: [riscv64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-s390x@12.19.0':
-    resolution: {integrity: sha512-Bntrz3smF+pHpH3z82JFY3ldFthmrpGXB6xT32qhDB0qwo096OUSQvzO3xZ6+Mt1bnStM72q7w0Ht1jyEMdS3A==}
+  '@pnpm/exe.linux-s390x@12.21.0':
+    resolution: {integrity: sha512-8VXGNGVNEfs7pL9GTZOzFxjFEnMt4WL3rLOADR5/kPQ7ROTV9GfpVI2DPO/zArXFSkvfc9Zad/WypHLbvzoaTQ==}
     cpu: [s390x]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.linux-x64-musl@12.19.0':
-    resolution: {integrity: sha512-2IJD+LBqnrwAInPSlhm5Z4l8qXUEG3L/zPmAy1amx8Mw/d+SYOoeI4X61eML1m4UD9mjrePF76M6Z+DEbLv/mg==}
+  '@pnpm/exe.linux-x64-musl@12.21.0':
+    resolution: {integrity: sha512-MnC5vpIXYubhDZCgCwlfJMg7Cg6HupN2IuouT9gD/tUmOfVdQYqeyYccWbthyo/Jeto8de1oQlxeRN1+1Hl2DQ==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@pnpm/exe.linux-x64@12.19.0':
-    resolution: {integrity: sha512-oTji4PzIwSG+AbcHnouo/hW1Oz+1yDP30KJqBmmQnxiOSqTAi8HylytTrONUT08DIjuZ9t8gGZWjv/tqnQdb2w==}
+  '@pnpm/exe.linux-x64@12.21.0':
+    resolution: {integrity: sha512-8eufCjHXspKbNS/kh8q4Q0gqJoOuvC4Q5pgos6XS8By/nAMtP+jf8F1Cw9er840kfAX+PJ/ts+A9qnLE91rvXQ==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@pnpm/exe.netbsd-x64@12.19.0':
-    resolution: {integrity: sha512-0Sh1mIsOEvuQQsI6wAK3iRYBTqIaa3uAP81Gd+P27/yIpwfLnrHRdtWw+ojfhz0KeQmOH3SJYIY6504wYYuDNA==}
+  '@pnpm/exe.netbsd-x64@12.21.0':
+    resolution: {integrity: sha512-eyh1M8hQZCkLWxuva7S/fc1SbFbgqg0/5di0dgWmyiuc2Io3dbWVihDun8X+XM8zsR5uhIDvvZpbS9aZQbCovg==}
     cpu: [x64]
     os: [netbsd]
 
-  '@pnpm/exe.win32-arm64@12.19.0':
-    resolution: {integrity: sha512-vHJKl9Z4KDm48dAMlf2RXJroQiFTrxcN0DWc7m6fi+czyTHwtR8kVn2W0CQA0wbWAsdFg2kZ1A8KCuzbAo5Vsg==}
+  '@pnpm/exe.win32-arm64@12.21.0':
+    resolution: {integrity: sha512-7xTxxUXo/grRLivSeIl6B21gnsz7ooe5EMPcJmQqwxc8WLJVReN8MzrlHru8bqXfVr4X3+6ZGZscntKenlCBqQ==}
     cpu: [arm64]
     os: [win32]
 
-  '@pnpm/exe.win32-x64@12.19.0':
-    resolution: {integrity: sha512-Jr3tdhL7PG20T2mz3XWVa/CIod5dIC3vv+IUWNictKTky8vNwQQ00OCK8fd9rNihVhCC61oMjBROm8ABZEDLWQ==}
+  '@pnpm/exe.win32-x64@12.21.0':
+    resolution: {integrity: sha512-9TpkJemVApxJ1Z1w0ZFGN+AuSx4nJOqXSJUqMqDvaXTYwGOzvBiiWdFP9GN0ketiWCQS1Q0/pza2E7I3pP0OBQ==}
     cpu: [x64]
     os: [win32]
 
-  pnpm@12.19.0:
-    resolution: {integrity: sha512-hzJ7ZhmFMgWDTkvlm6OiMeMD2fXkNZEu3jMSt1Obea+JCUL2UTsFpGkHRWZoiARcCbM/xCDCzS072VwBuiHb6w==}
+  pnpm@12.21.0:
+    resolution: {integrity: sha512-Zv2CeO4ok1zpUXktNDZ/869cQyonVkRYIwKVM4NbjaUpu+C+UTCv1W7QcT+4eJ5Hutgtk71a4v5UsVVi1idu8A==}
     engines: {node: '>=18'}
     hasBin: true
 
 snapshots:
 
-  '@pnpm/exe.android-arm64@12.19.0':
+  '@pnpm/exe.android-arm64@12.21.0':
     optional: true
 
-  '@pnpm/exe.android-x64@12.19.0':
+  '@pnpm/exe.android-x64@12.21.0':
     optional: true
 
-  '@pnpm/exe.darwin-arm64@12.19.0':
+  '@pnpm/exe.darwin-arm64@12.21.0':
     optional: true
 
-  '@pnpm/exe.darwin-x64@12.19.0':
+  '@pnpm/exe.darwin-x64@12.21.0':
     optional: true
 
-  '@pnpm/exe.freebsd-x64@12.19.0':
+  '@pnpm/exe.freebsd-x64@12.21.0':
     optional: true
 
-  '@pnpm/exe.linux-arm64-musl@12.19.0':
+  '@pnpm/exe.linux-arm64-musl@12.21.0':
     optional: true
 
-  '@pnpm/exe.linux-arm64@12.19.0':
+  '@pnpm/exe.linux-arm64@12.21.0':
     optional: true
 
-  '@pnpm/exe.linux-ppc64@12.19.0':
+  '@pnpm/exe.linux-ppc64@12.21.0':
     optional: true
 
-  '@pnpm/exe.linux-riscv64@12.19.0':
+  '@pnpm/exe.linux-riscv64@12.21.0':
     optional: true
 
-  '@pnpm/exe.linux-s390x@12.19.0':
+  '@pnpm/exe.linux-s390x@12.21.0':
     optional: true
 
-  '@pnpm/exe.linux-x64-musl@12.19.0':
+  '@pnpm/exe.linux-x64-musl@12.21.0':
     optional: true
 
-  '@pnpm/exe.linux-x64@12.19.0':
+  '@pnpm/exe.linux-x64@12.21.0':
     optional: true
 
-  '@pnpm/exe.netbsd-x64@12.19.0':
+  '@pnpm/exe.netbsd-x64@12.21.0':
     optional: true
 
-  '@pnpm/exe.win32-arm64@12.19.0':
+  '@pnpm/exe.win32-arm64@12.21.0':
     optional: true
 
-  '@pnpm/exe.win32-x64@12.19.0':
+  '@pnpm/exe.win32-x64@12.21.0':
     optional: true
 
-  pnpm@12.19.0:
+  pnpm@12.21.0:
     optionalDependencies:
-      '@pnpm/exe.android-arm64': 12.19.0
-      '@pnpm/exe.android-x64': 12.19.0
-      '@pnpm/exe.darwin-arm64': 12.19.0
-      '@pnpm/exe.darwin-x64': 12.19.0
-      '@pnpm/exe.freebsd-x64': 12.19.0
-      '@pnpm/exe.linux-arm64': 12.19.0
-      '@pnpm/exe.linux-arm64-musl': 12.19.0
-      '@pnpm/exe.linux-ppc64': 12.19.0
-      '@pnpm/exe.linux-riscv64': 12.19.0
-      '@pnpm/exe.linux-s390x': 12.19.0
-      '@pnpm/exe.linux-x64': 12.19.0
-      '@pnpm/exe.linux-x64-musl': 12.19.0
-      '@pnpm/exe.netbsd-x64': 12.19.0
-      '@pnpm/exe.win32-arm64': 12.19.0
-      '@pnpm/exe.win32-x64': 12.19.0
+      '@pnpm/exe.android-arm64': 12.21.0
+      '@pnpm/exe.android-x64': 12.21.0
+      '@pnpm/exe.darwin-arm64': 12.21.0
+      '@pnpm/exe.darwin-x64': 12.21.0
+      '@pnpm/exe.freebsd-x64': 12.21.0
+      '@pnpm/exe.linux-arm64': 12.21.0
+      '@pnpm/exe.linux-arm64-musl': 12.21.0
+      '@pnpm/exe.linux-ppc64': 12.21.0
+      '@pnpm/exe.linux-riscv64': 12.21.0
+      '@pnpm/exe.linux-s390x': 12.21.0
+      '@pnpm/exe.linux-x64': 12.21.0
+      '@pnpm/exe.linux-x64-musl': 12.21.0
+      '@pnpm/exe.netbsd-x64': 12.21.0
+      '@pnpm/exe.win32-arm64': 12.21.0
+      '@pnpm/exe.win32-x64': 12.21.0
 
 ---
 {
@@ -176,19 +176,55 @@ snapshots:
 	"projects": {
 		".": {
 			"devDependencies": {
-				"@types/mocha": {"specifier": "^10.0.10", "version": "10.0.10"},
-				"@types/node": {"specifier": "^26.6.6", "version": "26.6.6"},
-				"@types/vscode": {"specifier": "^1.146.0", "version": "1.146.0"},
-				"@typescript-eslint/eslint-plugin": {"specifier": "^8.73.0", "version": "8.73.0"},
-				"@typescript-eslint/parser": {"specifier": "^8.73.0", "version": "8.73.0"},
-				"@vscode/test-cli": {"specifier": "^0.0.15", "version": "0.0.15"},
+				"@types/mocha": {
+					"specifier": "^10.0.10",
+					"version": "10.0.10",
+				},
+				"@types/node": {
+					"specifier": "^26.6.6",
+					"version": "26.6.6",
+				},
+				"@types/vscode": {
+					"specifier": "^1.146.0",
+					"version": "1.146.0",
+				},
+				"@typescript-eslint/eslint-plugin": {
+					"specifier": "^8.73.0",
+					"version": "8.73.0",
+				},
+				"@typescript-eslint/parser": {
+					"specifier": "^8.73.0",
+					"version": "8.73.0",
+				},
+				"@vscode/test-cli": {
+					"specifier": "^0.0.15",
+					"version": "0.0.15",
+				},
 				"@vscode/test-electron": "3.1.0",
-				"esbuild": {"specifier": "^0.28.2", "version": "0.28.2"},
-				"eslint": {"specifier": "^10.15.0", "version": "10.15.0"},
-				"npm-run-all2": {"specifier": "^9.0.4", "version": "9.0.4"},
-				"prismjs": {"specifier": "^1.30.0", "version": "1.30.0"},
-				"typescript": {"specifier": "^6.0.3", "version": "6.0.3"},
-				"undici-types": {"specifier": "^8.12.4", "version": "8.12.4"},
+				"esbuild": {
+					"specifier": "^0.28.2",
+					"version": "0.28.2",
+				},
+				"eslint": {
+					"specifier": "^10.15.0",
+					"version": "10.15.0",
+				},
+				"npm-run-all2": {
+					"specifier": "^9.0.4",
+					"version": "9.0.4",
+				},
+				"prismjs": {
+					"specifier": "^1.30.0",
+					"version": "1.30.0",
+				},
+				"typescript": {
+					"specifier": "^6.0.3",
+					"version": "6.0.3",
+				},
+				"undici-types": {
+					"specifier": "^8.12.4",
+					"version": "8.12.4",
+				},
 			},
 		},
 	},
@@ -429,7 +465,10 @@ snapshots:
 			"integrity": "sha512-phrYmNiYppR7znFEdqgfWHXR6NCkZEK7hwWDHZUjit/2/U0r6XvkDl0SYnoM51Hq7FhCGdLDT6zxCCOY1hexsQ==",
 			"engines": {"node": "^12.22.0 || ^14.17.0 || >=16.0.0"},
 			"peerDependencies": {
-				"eslint": {"specifier": "^6.0.0 || ^7.0.0 || >=8.0.0", "version": "10.15.0"},
+				"eslint": {
+					"specifier": "^6.0.0 || ^7.0.0 || >=8.0.0",
+					"version": "10.15.0",
+				},
 			},
 			"dependencies": {
 				"eslint-visitor-keys": "3.4.3",
@@ -445,7 +484,10 @@ snapshots:
 			"integrity": "sha512-WrTH7nioI9QPY4NZGnsywmecswJdgeq4BCM76qok9VgjTO29ZgUzUvcuJLVPYVQM4uDbaPBU0M33R9DIxI8X3w==",
 			"engines": {"node": "^20.19.0 || ^22.13.0 || >=24"},
 			"peerDependencies": {
-				"supports-color": {"version": "8.1.1", "below": true},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
 			},
 			"dependencies": {
 				"@eslint/object-schema": "3.0.5",
@@ -560,7 +602,10 @@ snapshots:
 			"integrity": "sha512-WbzE9sdmQtKy8vrNPa9BRnwZh5UF4s1KTmSK0KUVLo3eff5BlQNNWDnFOouNpKfPKDnms9xynJjsMYjMaT/aFQ==",
 			"engines": {"node": ">= 18"},
 			"peerDependencies": {
-				"keyv": {"specifier": "^5.6.0", "version": "5.6.0"},
+				"keyv": {
+					"specifier": "^5.6.0",
+					"version": "5.6.0",
+				},
 			},
 			"dependencies": {
 				"hashery": "1.5.1",
@@ -613,10 +658,22 @@ snapshots:
 			"integrity": "sha512-UkygMFer53Yzn29MCYFTHf34hGXf5KJhiDWfIm1tXtXRrym1CS6l5H9Y3yCtPWChpC0/f93H88gdj8tN0dd4kw==",
 			"engines": {"node": "^18.18.0 || ^20.9.0 || >=21.1.0"},
 			"peerDependencies": {
-				"@typescript-eslint/parser": {"specifier": "^8.73.0", "version": "8.73.0"},
-				"eslint": {"specifier": "^8.57.0 || ^9.0.0 || ^10.0.0", "version": "10.15.0"},
-				"supports-color": {"version": "8.1.1", "below": true},
-				"typescript": {"specifier": ">=4.8.4 <6.1.0", "version": "6.0.3"},
+				"@typescript-eslint/parser": {
+					"specifier": "^8.73.0",
+					"version": "8.73.0",
+				},
+				"eslint": {
+					"specifier": "^8.57.0 || ^9.0.0 || ^10.0.0",
+					"version": "10.15.0",
+				},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
+				"typescript": {
+					"specifier": ">=4.8.4 <6.1.0",
+					"version": "6.0.3",
+				},
 			},
 			"dependencies": {
 				"@eslint-community/regexpp": "4.12.2",
@@ -634,9 +691,18 @@ snapshots:
 			"integrity": "sha512-AuL45bVcmssHfZ3Di3cs9Q0l4gBm4ZFVrJOQEE7VpqW+PVgQaEwSwazz4TVIiFabXkk6U51EprYDwqw+HR8ePw==",
 			"engines": {"node": "^18.18.0 || ^20.9.0 || >=21.1.0"},
 			"peerDependencies": {
-				"eslint": {"specifier": "^8.57.0 || ^9.0.0 || ^10.0.0", "version": "10.15.0"},
-				"supports-color": {"version": "8.1.1", "below": true},
-				"typescript": {"specifier": ">=4.8.4 <6.1.0", "version": "6.0.3"},
+				"eslint": {
+					"specifier": "^8.57.0 || ^9.0.0 || ^10.0.0",
+					"version": "10.15.0",
+				},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
+				"typescript": {
+					"specifier": ">=4.8.4 <6.1.0",
+					"version": "6.0.3",
+				},
 			},
 			"dependencies": {
 				"@typescript-eslint/scope-manager": "8.73.0",
@@ -651,8 +717,14 @@ snapshots:
 			"integrity": "sha512-/pEf8Rc4Mjk+qJnY0uO1+Gadeal8uv50xpuic+srG2vIVatA0XxvWMUeMtFvs6OCHqftiQ7/+qH4aehG5stzIA==",
 			"engines": {"node": "^18.18.0 || ^20.9.0 || >=21.1.0"},
 			"peerDependencies": {
-				"supports-color": {"version": "8.1.1", "below": true},
-				"typescript": {"specifier": ">=4.8.4 <6.1.0", "version": "6.0.3"},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
+				"typescript": {
+					"specifier": ">=4.8.4 <6.1.0",
+					"version": "6.0.3",
+				},
 			},
 			"dependencies": {
 				"@typescript-eslint/tsconfig-utils": "8.73.0",
@@ -674,7 +746,10 @@ snapshots:
 			"integrity": "sha512-lmtCFOfYaJfpqZywGuXi4FpNtE+NQ+YLe3T0K9rtEDcW8ZuGWvfI++pj8r05sYMI8vWT2CYK4rWyedmD6Rp4og==",
 			"engines": {"node": "^18.18.0 || ^20.9.0 || >=21.1.0"},
 			"peerDependencies": {
-				"typescript": {"specifier": ">=4.8.4 <6.1.0", "version": "6.0.3"},
+				"typescript": {
+					"specifier": ">=4.8.4 <6.1.0",
+					"version": "6.0.3",
+				},
 			},
 		},
 
@@ -682,9 +757,18 @@ snapshots:
 			"integrity": "sha512-MOC9i4xy1F7KcDde7Ip8jf1SrRiALb2Km4UWxGNjUE2YlhjIEo1ayE27GHIwIQyfWuHTmEonQT14uyurlyC6aA==",
 			"engines": {"node": "^18.18.0 || ^20.9.0 || >=21.1.0"},
 			"peerDependencies": {
-				"eslint": {"specifier": "^8.57.0 || ^9.0.0 || ^10.0.0", "version": "10.15.0"},
-				"supports-color": {"version": "8.1.1", "below": true},
-				"typescript": {"specifier": ">=4.8.4 <6.1.0", "version": "6.0.3"},
+				"eslint": {
+					"specifier": "^8.57.0 || ^9.0.0 || ^10.0.0",
+					"version": "10.15.0",
+				},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
+				"typescript": {
+					"specifier": ">=4.8.4 <6.1.0",
+					"version": "6.0.3",
+				},
 			},
 			"dependencies": {
 				"@typescript-eslint/types": "8.73.0",
@@ -704,9 +788,18 @@ snapshots:
 			"integrity": "sha512-InjlBkSdWceIwIBWSwS3ENUp+i0O02PGX3Zv2wnihWJC1WDVGvG7mTHuf8b57uAaITj94d6tRPDH+sUEtXdRQQ==",
 			"engines": {"node": "^18.18.0 || ^20.9.0 || >=21.1.0"},
 			"peerDependencies": {
-				"@typescript/native": {"specifier": "npm:typescript@>=7.1.0-dev.20261009.1 || >=7.1.0-beta <7.1.0-dev", "optional": true},
-				"supports-color": {"version": "8.1.1", "below": true},
-				"typescript": {"specifier": ">=4.8.4 <6.1.0", "version": "6.0.3"},
+				"@typescript/native": {
+					"specifier": "npm:typescript@>=7.1.0-dev.20261009.1 || >=7.1.0-beta <7.1.0-dev",
+					"optional": true,
+				},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
+				"typescript": {
+					"specifier": ">=4.8.4 <6.1.0",
+					"version": "6.0.3",
+				},
 			},
 			"dependencies": {
 				"@typescript-eslint/project-service": "8.73.0",
@@ -725,9 +818,18 @@ snapshots:
 			"integrity": "sha512-j2SVJJvVkXdUL0WcEzo4vEH1mO1vIi8KlVukcYA2MgMZvYN2LlZR4PmsW+GTSxSW24j6Q/EP7+MOifLtg5hmsA==",
 			"engines": {"node": "^18.18.0 || ^20.9.0 || >=21.1.0"},
 			"peerDependencies": {
-				"eslint": {"specifier": "^8.57.0 || ^9.0.0 || ^10.0.0", "version": "10.15.0"},
-				"supports-color": {"version": "8.1.1", "below": true},
-				"typescript": {"specifier": ">=4.8.4 <6.1.0", "version": "6.0.3"},
+				"eslint": {
+					"specifier": "^8.57.0 || ^9.0.0 || ^10.0.0",
+					"version": "10.15.0",
+				},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
+				"typescript": {
+					"specifier": ">=4.8.4 <6.1.0",
+					"version": "6.0.3",
+				},
 			},
 			"dependencies": {
 				"@eslint-community/eslint-utils": "4.9.1",
@@ -767,7 +869,10 @@ snapshots:
 			"integrity": "sha512-CRqv5u+YYoseuNVJ6Tyo4k0sF0mx4qnKMihRB0PjsUF8Dc0WKtCXo6CNL6nWWm5esfFQsQA/pejMj4ZbpJVLTw==",
 			"engines": {"node": ">=22"},
 			"peerDependencies": {
-				"supports-color": {"version": "8.1.1", "below": true},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
 			},
 			"dependencies": {
 				"http-proxy-agent": "7.0.2",
@@ -781,7 +886,10 @@ snapshots:
 		"acorn-jsx@5.3.2": {
 			"integrity": "sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==",
 			"peerDependencies": {
-				"acorn": {"specifier": "^6.0.0 || ^7.0.0 || ^8.0.0", "version": "8.16.0"},
+				"acorn": {
+					"specifier": "^6.0.0 || ^7.0.0 || ^8.0.0",
+					"version": "8.16.0",
+				},
 			},
 		},
 
@@ -879,7 +987,10 @@ snapshots:
 			"engines": {"node": "20 || >=22"},
 			"hasBin": true,
 			"peerDependencies": {
-				"monocart-coverage-reports": {"specifier": "^2", "optional": true},
+				"monocart-coverage-reports": {
+					"specifier": "^2",
+					"optional": true,
+				},
 			},
 			"dependencies": {
 				"@bcoe/v8-coverage": "1.0.2",
@@ -1009,7 +1120,11 @@ snapshots:
 			"integrity": "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==",
 			"engines": {"node": ">=6.0"},
 			"peerDependencies": {
-				"supports-color": {"specifier": "*", "version": "8.1.1", "optional": true},
+				"supports-color": {
+					"specifier": "*",
+					"version": "8.1.1",
+					"optional": true,
+				},
 			},
 			"dependencies": {
 				"ms": "2.1.3",
@@ -1125,8 +1240,14 @@ snapshots:
 			"engines": {"node": "^20.19.0 || ^22.13.0 || >=24"},
 			"hasBin": true,
 			"peerDependencies": {
-				"jiti": {"specifier": "*", "optional": true},
-				"supports-color": {"version": "8.1.1", "below": true},
+				"jiti": {
+					"specifier": "*",
+					"optional": true,
+				},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
 			},
 			"dependencies": {
 				"@eslint-community/eslint-utils": "4.9.1",
@@ -1214,7 +1335,11 @@ snapshots:
 			"integrity": "sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==",
 			"engines": {"node": ">=12.0.0"},
 			"peerDependencies": {
-				"picomatch": {"specifier": "^3 || ^4", "version": "4.0.4", "optional": true},
+				"picomatch": {
+					"specifier": "^3 || ^4",
+					"version": "4.0.4",
+					"optional": true,
+				},
 			},
 		},
 
@@ -1340,7 +1465,10 @@ snapshots:
 			"integrity": "sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==",
 			"engines": {"node": ">= 14"},
 			"peerDependencies": {
-				"supports-color": {"version": "8.1.1", "below": true},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
 			},
 			"dependencies": {
 				"agent-base": "7.1.3",
@@ -1352,7 +1480,10 @@ snapshots:
 			"integrity": "sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==",
 			"engines": {"node": ">= 14"},
 			"peerDependencies": {
-				"supports-color": {"version": "8.1.1", "below": true},
+				"supports-color": {
+					"version": "8.1.1",
+					"below": true,
+				},
 			},
 			"dependencies": {
 				"agent-base": "7.1.3",
@@ -2017,7 +2148,10 @@ snapshots:
 			"integrity": "sha512-OJ/ibxhPlqrMM0UiNHJ/0CKQkoKF243/AEmplt3qpRgkW8VG7IfOS41h7V8TjITqdByHzrjcS/2si+y4lIh8NA==",
 			"engines": {"node": ">=18.12"},
 			"peerDependencies": {
-				"typescript": {"specifier": ">=4.8.4", "version": "6.0.3"},
+				"typescript": {
+					"specifier": ">=4.8.4",
+					"version": "6.0.3",
+				},
 			},
 		},
 
