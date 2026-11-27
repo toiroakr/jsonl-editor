@@ -102,7 +102,7 @@
     "npm-run-all2": "^9.0.4",
     "prismjs": "^1.30.0",
     "typescript": "^6.0.3",
-    "undici-types": "^8.12.4"
+    "undici-types": "^8.13.0"
   },
   "repository": {
     "type": "git",

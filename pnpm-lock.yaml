@@ -222,8 +222,8 @@ snapshots:
 					"version": "6.0.3",
 				},
 				"undici-types": {
-					"specifier": "^8.12.4",
-					"version": "8.12.4",
+					"specifier": "^8.13.0",
+					"version": "8.13.0",
 				},
 			},
 		},
@@ -2169,8 +2169,8 @@ snapshots:
 			"hasBin": true,
 		},
 
-		"undici-types@8.12.4": {
-			"integrity": "sha512-GNCQH3MbVGB8OAVAoTiLH8pu4wx5Ni3DWKpnBzGj3WDsi8EwmK0aOVBooNEt+g5YL1eHPxcS9XUTouwFU6j1kQ==",
+		"undici-types@8.13.0": {
+			"integrity": "sha512-oE6ybuLS2aUIbVCR2zAjiidK4cFOf1FqSWBekci5p6baThYI4HffutuV+d1Y5jLLAmZfE+VhTwTBDoYGWRkWeA==",
 		},
 
 		"undici-types@8.9.0": {
